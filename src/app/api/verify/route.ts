@@ -1,5 +1,5 @@
-import User from "@/app/models/User";
-import MongoConnection from "@/app/utils/MongoConnection";
+import User from "@/models/User";
+import MongoConnection from "@/utils/MongoConnection";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -8,22 +8,40 @@ export async function POST(request: Request) {
         await MongoConnection();
 
         const userData = await request.json();
+        console.log("userData: From Verify ", userData);
 
-        const user = await User.findOne({ _id: userData.id });
+        if (userData.email) {
+            console.log("condition userData.email: ", userData.email);
 
-        if (user) {
-            if (Number(user.verificationCode) === Number(userData.otp)) {
+            const user = await User.findOne({ email: userData.email });
 
-                await User.findOneAndUpdate({ _id: userData.id }, { verify: true, isActive: true })
-
-                return NextResponse.json({ status: 200 });
+            if (user) {
+                if (Number(user.verificationCode) === Number(userData.otp)) {
+                    return NextResponse.json({ status: 200 });
+                } else {
+                    return NextResponse.json({ message: "Invalid OTP" }, { status: 500 });
+                }
             } else {
-                return NextResponse.json({ message: "Invalid OTP" }, { status: 500 });
+                return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
             }
-        } else {
-            return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
         }
+        if (userData.id) {
+            console.log("userData.id: ", userData.id);
+            const user = await User.findOne({ _id: userData.id });
 
+            if (user) {
+                if (Number(user.verificationCode) === Number(userData.otp)) {
+
+                    await User.findOneAndUpdate({ _id: userData.id }, { verify: true, isActive: true })
+
+                    return NextResponse.json({ status: 200 });
+                } else {
+                    return NextResponse.json({ message: "Invalid OTP" }, { status: 500 });
+                }
+            } else {
+                return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
+            }
+        }
     } catch (error) {
         console.log("error: ", error);
         return NextResponse.json({ status: 500 });

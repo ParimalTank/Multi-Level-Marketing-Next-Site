@@ -1,7 +1,7 @@
 
-import User from "@/app/models/User";
-import { sendMail } from "@/app/utils/MailSender";
-import MongoConnection from "@/app/utils/MongoConnection";
+import User from "@/models/User";
+import { sendMail } from "@/utils/MailSender";
+import MongoConnection from "@/utils/MongoConnection";
 import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
 
@@ -15,10 +15,11 @@ export async function POST(request: Request) {
     otp = otp * 1000000;
     otp = parseInt(otp);
 
+    let userReferralCode = (Math.random() + 1).toString(36).substring(7);
+
     try {
 
         const userData = await request.json();
-        console.log("userData: ", userData);
 
         const email = await User.exists({ email: userData.email });
 
@@ -26,26 +27,33 @@ export async function POST(request: Request) {
             return NextResponse.json({ message: "User is Already Exist" }, { status: 409 })
         } else {
 
-            const generateHash = await bcrypt.hash(userData.password, 10);
+            const checkReferralCode = await User.findOne({ referralcode: userData.referralcode });
 
-            const user = {
-                firstname: userData.firstname,
-                lastname: userData.lastname,
-                email: userData.email,
-                password: generateHash,
-                referralcode: userData.referralcode,
-                verificationCode: otp
+            if (checkReferralCode) {
+                const generateHash = await bcrypt.hash(userData.password, 10);
+
+                const user = {
+                    firstname: userData.firstname,
+                    lastname: userData.lastname,
+                    email: userData.email,
+                    password: generateHash,
+                    referralcode: userReferralCode,
+                    referralFrom: userData.referralcode,
+                    verificationCode: otp
+                }
+
+                const result = await User.create(user);
+
+                // await sendMail(
+                //     "Mail Verification",
+                //     JSON.stringify(userData.email),
+                //     `Verify Code :  ${otp}`
+                // );
+
+                return NextResponse.json({ result }, { status: 200 })
+            } else {
+                return NextResponse.json({ status: 410 })
             }
-
-            const result = await User.create(user);
-
-            // await sendMail(
-            //     "Mail Verification",
-            //     JSON.stringify(userData.email),
-            //     `Verify Code :  ${otp}`
-            // );
-
-            return NextResponse.json({ result }, { status: 200 })
         }
     } catch (err) {
         console.log("err", err);

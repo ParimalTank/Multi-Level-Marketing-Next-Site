@@ -29,7 +29,7 @@ const ForgotPassword = () => {
         router.push("/verify");
 
         await axios.post("http://localhost:3000/api/forgotpassword", data).then((response) => {
-            router.push(`/verifybeforreset?id=${response.data.id}`);
+            router.push(`/verifybeforreset?email=${response.data.email}`);
         }).catch((error) => {
             toast.error('User is Already Registered');
         })

@@ -1,7 +1,7 @@
 
-import User from "@/app/models/User";
-import { sendMail } from "@/app/utils/MailSender";
-import MongoConnection from "@/app/utils/MongoConnection";
+import User from "@/models/User";
+import { sendMail } from "@/utils/MailSender";
+import MongoConnection from "@/utils/MongoConnection";
 import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
 
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
             //     `Verify Code :  ${otp}`
             // );
             await User.findOneAndUpdate({ email: userData.email }, { verificationCode: otp })
-            return NextResponse.json({ id: user._id }, { status: 200 })
+            return NextResponse.json({ email: userData.email }, { status: 200 })
 
         } else {
             return NextResponse.json({ message: "Invalid Email Id" }, { status: 409 })

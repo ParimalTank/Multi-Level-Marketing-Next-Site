@@ -1,15 +1,23 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const ResetPassword = () => {
 
     const router = useRouter();
+    const [email, setEmail] = useState();
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const search = searchParams.get('email');
+        setEmail(search);
+        console.log("search: ", search);
+    }, [email])
 
     const [formData, setFormData] = useState({
         password: "",
@@ -45,17 +53,18 @@ const ResetPassword = () => {
     const { errors } = formState
 
     const onSubmit = async (data: any) => {
-        console.log("Data submitted");
         console.log("data: ", data);
-        toast.success('Register Successfully');
-        router.push("/");
 
-        // await axios.post("http://localhost:3000/api/register", data).then((response) => {
-        //     console.log("response: ", response);
-        //     toast.success('Register Successfully');
-        // }).catch((error) => {
-        //     toast.error('User is Already Registered');
-        // })
+        const userData = data;
+        userData["email"] = email;
+
+        await axios.post("http://localhost:3000/api/resetpassword", userData).then((response) => {
+            console.log("response: ", response);
+            toast.success('Password Reset Successfully');
+            router.push("/");
+        }).catch((error) => {
+            toast.error('User is Already Registered');
+        })
     }
 
     return (

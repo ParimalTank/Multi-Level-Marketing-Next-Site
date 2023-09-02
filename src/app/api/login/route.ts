@@ -1,19 +1,21 @@
-import User from "@/app/models/User";
-import MongoConnection from "@/app/utils/MongoConnection";
+import User from "@/models/User";
+import MongoConnection from "@/utils/MongoConnection";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export async function POST(request: Request) {
     await MongoConnection();
 
     try {
         const userData = await request.json();
+        console.log("userData: ", userData);
 
         const result = await User.findOne({ email: userData.email });
         console.log("result: ", result);
 
         if (!result) {
-            return NextResponse.json({ message: "Invalide User Credantials" }, { status: 409 })
+            return NextResponse.json({ message: "Invalid User Credentials" }, { status: 409 })
         }
 
         const match = await bcrypt.compare(userData.password, result.password);
@@ -21,12 +23,20 @@ export async function POST(request: Request) {
         if (!match) {
             return NextResponse.json({ status: 409 })
         }
-        console.log("result.isActive === false", result.isActive === "false");
 
         if (result.isActive === "false") {
             return NextResponse.json({ status: 410 })
         } else {
-            return NextResponse.json({ status: 200 })
+            const token = jwt.sign({ id: result._id }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 * 7 })
+
+            const response = NextResponse.json({ status: 200 });
+
+            response.cookies.set({
+                name: "token",
+                value: token,
+                path: "/",
+            });
+            return response
         }
 
         // const email = userData.email;

@@ -53,7 +53,7 @@ const Login = () => {
             } else if (response.data.status === 409) {
                 toast.error('Invalid Credentials');
             } else {
-                toast.success('Register Successfully');
+                toast.success('Login Successfully');
                 router.push("/dashboard");
             }
         }).catch((error) => {
@@ -107,12 +107,10 @@ const Login = () => {
                                             </div>
                                             <button type="submit" className="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2" disabled={!formState.isValid}>Sign In</button>
                                             <div className="d-flex align-items-center justify-content-center">
-                                                <p className="fs-4 mb-0 fw-bold">New to Modernize?</p>
+                                                <p className="fs-4 mb-0 fw-bold">New to MLM?</p>
                                                 <a className="text-primary fw-bold ms-2" href="/register">Create an account</a>
                                             </div>
                                         </form>
-
-
                                     </div>
                                 </div>
                             </div>

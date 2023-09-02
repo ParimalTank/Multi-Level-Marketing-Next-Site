@@ -11,14 +11,14 @@ import { useRouter, useSearchParams } from 'next/navigation';
 const VerificationResetPassword = () => {
 
     const router = useRouter();
-    const [id, setId] = useState();
+    const [email, setEmail] = useState();
     const searchParams = useSearchParams();
 
     useEffect(() => {
-        const search = searchParams.get('id');
-        setId(search);
+        const search = searchParams.get('email');
+        setEmail(search);
         console.log("search: ", search);
-    }, [id])
+    }, [email])
 
     const [formData, setFormData] = useState({
         otp: ""
@@ -35,12 +35,12 @@ const VerificationResetPassword = () => {
     const onSubmit = async (data: any) => {
 
         const userData = data;
-        userData["id"] = id;
+        userData["email"] = email;
 
         await axios.post("http://localhost:3000/api/verify", data).then((response) => {
             console.log("response: ", response);
             toast.success('Verification Successfully');
-            router.push("/resetpassword");
+            router.push(`/resetpassword?email=${email}`);
         }).catch((error) => {
             toast.error('Verification Failed, Invalid OTP');
         })

@@ -46,7 +46,7 @@ const Register = () => {
             .min(8, "Password length should be at least 8 characters")
             .max(32, "Password cannot exceed more than 32 characters"),
         confirmpassword: Yup.string().required('Password is required').oneOf([Yup.ref("password")], "Passwords do not match"),
-        referralcode: Yup.string().required('Referral code is required'),
+        referralcode: Yup.string().required('Referral code is required').max(6, "Referral must have maximum 6 character").min(6, "Referral must have minimum 6 character"),
 
     });
 
@@ -56,9 +56,15 @@ const Register = () => {
     const onSubmit = async (data: any) => {
 
         await axios.post("http://localhost:3000/api/register", data).then((response) => {
-            console.log("response: ", response);
-            toast.success('Register Successfully');
-            router.push(`/verify?id=${response.data.result._id}`);
+
+            if (response.data.status === 410) {
+                toast.error('Invalid Referral Code');
+            } else {
+                console.log("response: ", response);
+                toast.success('Register Successfully');
+                router.push(`/verify?id=${response.data.result._id}`);
+            }
+
         }).catch((error) => {
             toast.error('User is Already Registered');
         })
