@@ -2,6 +2,7 @@ import Footer from "@/components/Footer";
 import { getCookies } from "cookies-next";
 import { useRouter } from "next/navigation";
 import Script from "next/script"
+import { Toaster } from "react-hot-toast";
 
 export const metadata = {
   title: 'Next.js',
@@ -21,6 +22,7 @@ export default function RootLayout({
         <link rel="stylesheet" href="../assets/css/styles.min.css" />
       </head>
       <body>
+        <Toaster />
         {children}
         <Footer />
         <Script src="../assets/libs/jquery/dist/jquery.min.js"></Script>
