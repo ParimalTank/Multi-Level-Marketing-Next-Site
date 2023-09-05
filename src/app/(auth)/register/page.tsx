@@ -59,6 +59,8 @@ const Register = () => {
 
             if (response.data.status === 410) {
                 toast.error('Invalid Referral Code');
+            } else if (response.data.status === 409) {
+                toast.error('Referral code is not valid! Because user exist there package level limit. please upgrade package');
             } else {
                 console.log("response: ", response);
                 toast.success('Register Successfully');

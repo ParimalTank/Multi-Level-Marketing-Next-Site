@@ -3,18 +3,31 @@ import { Navbar } from '@/components/Navbar'
 import { Sidebar } from '@/components/Sidebar'
 import withAuth from '@/utils/withAuth';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { cookies } from 'next/headers';
 
 async function Dashboard() {
     let data;
-    const getData = async () => {
+    const getPackageData = async () => {
         await axios.get("http://localhost:3000/api/package").then((res) => {
             data = res.data.result;
         }).catch(error => {
             console.log("error: ", error);
         })
     }
-    await getData();
+    await getPackageData();
+
+    let userData;
+    let packageDetails;
+    const getUserData = async () => {
+        const token = cookies().get("token")?.value
+        await axios.post("http://localhost:3000/api/user", { token }).then((res) => {
+            userData = res.data.result;
+            packageDetails = res.data.package;
+        }).catch(error => {
+            console.log("error: ", error);
+        })
+    }
+    await getUserData();
 
     return (
         <div className="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -25,8 +38,8 @@ async function Dashboard() {
             <div className="body-wrapper">
                 <Navbar />
                 <div className="container-fluid">
+                    <h3 style={{ textAlign: "end" }}>Current Balance : {userData.userWallet} </h3>
                     <div className="row">
-
                         {
                             data?.map((response) => {
 
@@ -35,7 +48,7 @@ async function Dashboard() {
                                         <div className="card overflow-hidden rounded-2">
                                             <div className="position-relative">
                                                 <a href={`/package/${response._id}`}><img src={response.imageurl} className="card-img-top rounded-0" alt="..." /></a>
-                                                <a href="" className="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i className="ti ti-basket fs-4"></i></a>                      </div>
+                                                <a href="" className="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i className="ti ti-basket fs-4"></i></a></div>
                                             <div className="card-body pt-3 p-4">
                                                 <h6 className="fw-semibold fs-4">{response.name}</h6>
                                                 <div className="d-flex align-items-center justify-content-between">
@@ -51,48 +64,44 @@ async function Dashboard() {
                             })
                         }
 
-                        {/* <div className="col-sm-6 col-xl-3">
-                            <div className="card overflow-hidden rounded-2">
-                                <div className="position-relative">
-                                    <a href={`/dashboard`}><img src="../assets/chat.gif" className="card-img-top rounded-0" alt="..." /></a>
-                                    <a href="" className="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i className="ti ti-basket fs-4"></i></a>                      </div>
-                                <div className="card-body pt-3 p-4">
-                                    <h6 className="fw-semibold fs-4">Ethereum</h6>
-                                    <div className="d-flex align-items-center justify-content-between">
-                                        <h6 className="fw-semibold fs-4 mb-0">$50</h6>
-                                    </div>
-                                </div>
-                            </div>
+                        <h3>Package History</h3>
+                        <div className='table-responsive'>
+                            <table className="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Purchase Date & Time</th>
+                                        <th scope="col">Users Added In this Package</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        packageDetails?.map((result, index) => {
+                                            console.log("result: ", result);
+                                            return (
+                                                <tr key={index}>
+                                                    <th scope="row">{index + 1}</th>
+                                                    <td>{result.name}</td>
+                                                    <td>${result.packagePrice}</td>
+                                                    <td>{result.createdAt}</td>
+                                                    <td>{result.numberofUsers.length > 0 ? result.numberofUsers.map((res) => {
+
+                                                        return (
+                                                            <div>{res}</div>
+                                                        )
+                                                    })
+                                                        :
+                                                        "-"
+                                                    }</td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                                </tbody>
+                            </table>
                         </div>
-
-                        <div className="col-sm-6 col-xl-3">
-                            <div className="card overflow-hidden rounded-2">
-                                <div className="position-relative">
-                                    <a href=""><img src="../assets/bitcoin.gif" className="card-img-top rounded-0" alt="..." /></a>
-                                    <a href="" className="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i className="ti ti-basket fs-4"></i></a>                      </div>
-                                <div className="card-body pt-3 p-4">
-                                    <h6 className="fw-semibold fs-4">Bitcoin</h6>
-                                    <div className="d-flex align-items-center justify-content-between">
-                                        <h6 className="fw-semibold fs-4 mb-0">$100</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="col-sm-6 col-xl-3">
-                            <div className="card overflow-hidden rounded-2">
-                                <div className="position-relative">
-                                    <a href=""><img src="../assets/dogcoin.gif" className="card-img-top rounded-0" alt="..." /></a>
-                                    <a href="" className="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i className="ti ti-basket fs-4"></i></a>                      </div>
-                                <div className="card-body pt-3 p-4">
-                                    <h6 className="fw-semibold fs-4">Dogcoin</h6>
-                                    <div className="d-flex align-items-center justify-content-between">
-                                        <h6 className="fw-semibold fs-4 mb-0">$500</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> */}
-
                     </div>
                 </div>
             </div>

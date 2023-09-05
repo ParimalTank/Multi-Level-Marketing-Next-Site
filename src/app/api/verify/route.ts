@@ -38,13 +38,13 @@ export async function POST(request: Request) {
 
                     await User.findOneAndUpdate({ _id: userData.id }, { verify: true, isActive: true })
 
-                    const referralUser = [];
-                    referralUser.push(user.email);
+                    // New User comes from the referral and add that user to this purchase package
+                    const findPackage = await PackageHistory.findOne({ referralcode: user.referralFrom });
 
-                    console.log("referralUser: ", referralUser);
-                    // New User
-                    await PackageHistory.findOneAndUpdate({ referralcode: user.referralFrom }, { $set: { numberofUsers: referralUser } });
-                    console.log("User Added Successfully");
+                    // Add new User into a Package
+                    const referralUser = [...findPackage.numberofUsers, user.email];
+
+                    await PackageHistory.findOneAndUpdate({ referralcode: user.referralFrom }, { numberofUsers: referralUser });
 
                     return NextResponse.json({ status: 200 });
                 } else {

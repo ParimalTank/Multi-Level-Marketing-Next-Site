@@ -8,17 +8,17 @@ const Sample = () => {
             data-sidebar-position="fixed" data-header-position="fixed">
 
             {/* <Sidebar /> */}
-            <div className="body-wrapper">
-                <Navbar />
-                <div className="container-fluid">
-                    <div className="card">
-                        <div className="card-body">
-                            <h5 className="card-title fw-semibold mb-4">Sample Page</h5>
-                            <p className="mb-0">This is a sample page </p>
-                        </div>
+            {/* <div className="body-wrapper"> */}
+            <Navbar />
+            <div className="container-fluid">
+                <div className="card">
+                    <div className="card-body">
+                        <h5 className="card-title fw-semibold mb-4">Sample Page</h5>
+                        <p className="mb-0">This is a sample page </p>
                     </div>
                 </div>
             </div>
+            {/* </div> */}
         </div>
     )
 }

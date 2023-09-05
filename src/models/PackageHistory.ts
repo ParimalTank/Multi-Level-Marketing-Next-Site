@@ -2,6 +2,10 @@ import mongoose, { model, models } from "mongoose";
 
 const packageHistorySchema = new mongoose.Schema({
 
+    name: {
+        type: String,
+        required: true
+    },
     packageId: {
         type: String,
         required: true
@@ -23,9 +27,7 @@ const packageHistorySchema = new mongoose.Schema({
         required: true
     },
     numberofUsers: {
-        type: [{
-            type: String
-        }],
+        type: [String],
     }
 },
     {

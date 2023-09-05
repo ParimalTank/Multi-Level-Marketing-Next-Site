@@ -1,6 +1,15 @@
+"use client"
+import { deleteCookie } from 'cookies-next';
+import { cookies } from 'next/headers';
 import React from 'react'
 
 export const Navbar = () => {
+
+    const handleClick = async () => {
+        await deleteCookie("token");
+        window.location.reload();
+    }
+
     return (
         <header className="app-header">
             <nav className="navbar navbar-expand-lg navbar-light">
@@ -27,19 +36,11 @@ export const Navbar = () => {
                             </a>
                             <div className="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                                 <div className="message-body">
-                                    <a href="" className="d-flex align-items-center gap-2 dropdown-item">
+                                    <a href="/profile" className="d-flex align-items-center gap-2 dropdown-item">
                                         <i className="ti ti-user fs-6"></i>
                                         <p className="mb-0 fs-3">My Profile</p>
                                     </a>
-                                    <a href="" className="d-flex align-items-center gap-2 dropdown-item">
-                                        <i className="ti ti-mail fs-6"></i>
-                                        <p className="mb-0 fs-3">My Account</p>
-                                    </a>
-                                    <a href="" className="d-flex align-items-center gap-2 dropdown-item">
-                                        <i className="ti ti-list-check fs-6"></i>
-                                        <p className="mb-0 fs-3">My Task</p>
-                                    </a>
-                                    <a href="./authentication-login.html" className="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                                    <button onClick={handleClick} className='btn btn-outline-primary mx-4 border-0 bg-white text-bg-light d-block'>Logout</button>
                                 </div>
                             </div>
                         </li>
