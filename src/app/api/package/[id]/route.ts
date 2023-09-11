@@ -20,7 +20,7 @@ export async function GET(request: Request, { params }) {  // get the id from pa
 }
 
 export async function POST(request: Request, { params }) {  // get the id from params
-    await MongoConnection();
+    // await MongoConnection();
 
     // Get Token From the Header
     const accessToken = request.headers.get("cookie")?.substring(6);
@@ -37,10 +37,12 @@ export async function POST(request: Request, { params }) {  // get the id from p
         const result = await Package.findById({ _id: id });
 
         if (result) {
+
             const packagePrice = result.price;
 
             // Find the current Users Balance 
             const user = await User.findOne({ _id: userId });
+            console.log("This is main user: ", user);
 
             // Balance is Always grater then 0
             if (user.userWallet > 0) {
@@ -54,13 +56,28 @@ export async function POST(request: Request, { params }) {  // get the id from p
                     const findReferral = await PackageHistory.findOne({ referralcode: user.referralFrom });
                     console.log("findReferral: ", findReferral);
 
+                    let levels;
+
+                    if (packagePrice === 50) {
+                        levels = 1;
+
+                    } else if (packagePrice === 100) {
+                        levels = 5
+                    } else if (packagePrice === 500) {
+                        levels = 10
+                    }
+
+                    const totalLevel = user.levels + levels;
+                    console.log("totalLevel: ", totalLevel);
+
                     // If User is Not Buy a Referral user Package commission is not applying them
                     if (findReferral) {
+
+                        console.log("levels: ", levels);
 
                         if (findReferral?.packagePrice === packagePrice) {
 
                             // Add Commission to referral user
-
                             const packageUser = await User.findOne({ _id: findReferral.userId });
 
                             let commission;
@@ -72,7 +89,10 @@ export async function POST(request: Request, { params }) {  // get the id from p
                                 commission = packageUser.userWallet + ((packagePrice * 25) / 100);
                             }
 
-                            await User.findByIdAndUpdate({ _id: userId }, { userWallet: updatedWallet });
+                            // Update Wallet Value and their value
+                            await User.findByIdAndUpdate({ _id: userId }, { userWallet: updatedWallet, levels: totalLevel });
+
+                            // ADD Commission to referral user
                             await User.findByIdAndUpdate({ _id: findReferral.userId }, { userWallet: commission })
 
                             // Save the Package History
@@ -100,11 +120,10 @@ export async function POST(request: Request, { params }) {  // get the id from p
                                 numberofUsers: []
                             }
 
-                            await User.findByIdAndUpdate({ _id: userId }, { userWallet: updatedWallet });
+                            await User.findByIdAndUpdate({ _id: userId }, { userWallet: updatedWallet, levels: totalLevel });
                             await PackageHistory.create(SavePackageHistory);
                             return NextResponse.json({ result: result }, { status: 200 });
                         }
-
                     } else {
 
                         // Save the Package History
@@ -118,7 +137,7 @@ export async function POST(request: Request, { params }) {  // get the id from p
                             numberofUsers: []
                         }
 
-                        await User.findByIdAndUpdate({ _id: userId }, { userWallet: updatedWallet });
+                        await User.findByIdAndUpdate({ _id: userId }, { userWallet: updatedWallet, levels: totalLevel });
                         await PackageHistory.create(SavePackageHistory);
                         return NextResponse.json({ result: result }, { status: 200 });
                     }

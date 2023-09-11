@@ -4,11 +4,49 @@ import { Sidebar } from '@/components/Sidebar'
 import axios from 'axios'
 import { getCookie } from 'cookies-next'
 import { cookies } from 'next/headers'
+import { useRouter } from 'next/navigation'
+import jwt from "jsonwebtoken";
+
 import React, { useEffect, useState } from 'react'
 
 const Profile = () => {
 
+    const router = useRouter();
+
+    const token = getCookie("token");
+
+    useEffect(() => {
+        if (!token) {
+            router.push("/");
+        }
+    }, [token])
+
     const [user, setUser] = useState();
+
+    const [isSwitchOn, setIsSwitchOn] = useState(false);
+
+    function parseJwt(token: any) {
+        if (!token) { return; }
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64));
+    }
+
+    const onSwitchAction = async () => {
+        const token = getCookie("token");
+        const userId = parseJwt(token).id;
+
+        if (!isSwitchOn) {
+
+            await axios.post("http://localhost:3000/api/sendmail", { userId }).then((res) => {
+                console.log("message send")
+            }).catch((error) => {
+                console.log("error: ", error);
+            })
+            router.push(`/twofactorauth?id=${userId}`);
+        }
+        setIsSwitchOn(!isSwitchOn);
+    };
 
     const userData = async () => {
         let userData;
@@ -39,6 +77,13 @@ const Profile = () => {
                     <div className="container-fluid">
 
                         <div className='row'>
+
+                            <div className='text-end'>
+                                <div className="form-check form-switch d-flex justify-content-end flex-column align-items-end">
+                                    <label className="form-check-label" htmlFor="flexSwitchCheckDefault">2 Factor Authentication</label>
+                                    <input className="form-check-input" type="checkbox" role="switch" onChange={onSwitchAction} checked={isSwitchOn} id="flexSwitchCheckDefault" />
+                                </div>
+                            </div>
 
                             <div className="page-content page-container" id="page-content">
 

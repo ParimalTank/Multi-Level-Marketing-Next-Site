@@ -32,7 +32,7 @@ export const Sidebar = () => {
                             <span className="hide-menu">AUTH</span>
                         </li>
                         <li className="sidebar-item">
-                            <a className="sidebar-link" href="/login" aria-expanded="false">
+                            <a className="sidebar-link" href="/" aria-expanded="false">
                                 <span>
                                     <i className="ti ti-login"></i>
                                 </span>
@@ -56,17 +56,6 @@ export const Sidebar = () => {
                             </a>
                         </li>
                     </ul>
-                    <div className="unlimited-access hide-menu bg-light-primary position-relative mb-7 mt-5 rounded">
-                        <div className="d-flex">
-                            <div className="unlimited-access-title me-3">
-                                <h6 className="fw-semibold fs-4 mb-6 text-dark w-85">Upgrade to pro</h6>
-                                <a href="/" target="_blank" className="btn btn-primary fs-2 fw-semibold lh-sm">Buy Pro</a>
-                            </div>
-                            <div className="unlimited-access-img">
-                                <img src="../assets/images/backgrounds/rocket.png" alt="" className="img-fluid" />
-                            </div>
-                        </div>
-                    </div>
                 </nav>
             </div>
         </aside>

@@ -10,8 +10,14 @@ import toast from 'react-hot-toast'
 export default function PackageDetails() {
 
     const [productdetails, setProductDetails] = useState();
-
     const router = useRouter();
+
+    const token = getCookie("token");
+    useEffect(() => {
+        if (!token) {
+            router.push("/");
+        }
+    }, [token])
 
     const Params = useParams();
     const id = Params.id;

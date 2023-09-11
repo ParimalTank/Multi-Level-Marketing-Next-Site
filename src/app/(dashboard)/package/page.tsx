@@ -38,7 +38,7 @@ async function Dashboard() {
             <div className="body-wrapper">
                 <Navbar />
                 <div className="container-fluid">
-                    <h3 style={{ textAlign: "end" }}>Current Balance : {userData.userWallet} </h3>
+                    <h3 style={{ textAlign: "end" }}>Current Balance : {userData.userWallet}</h3>
                     <div className="row">
                         {
                             data?.map((response) => {
@@ -73,20 +73,23 @@ async function Dashboard() {
                                         <th scope="col">Name</th>
                                         <th scope="col">Price</th>
                                         <th scope="col">Purchase Date & Time</th>
-                                        <th scope="col">Users Added In this Package</th>
+                                        {/* <th scope="col">Users Added In this Package</th> */}
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {
                                         packageDetails?.map((result, index) => {
-                                            console.log("result: ", result);
+
+                                            const date = new Date(result.createdAt);
+                                            const time = new Date(date).toLocaleString(undefined, { timeZone: 'Asia/Kolkata' });
+
                                             return (
                                                 <tr key={index}>
                                                     <th scope="row">{index + 1}</th>
                                                     <td>{result.name}</td>
                                                     <td>${result.packagePrice}</td>
-                                                    <td>{result.createdAt}</td>
-                                                    <td>{result.numberofUsers.length > 0 ? result.numberofUsers.map((res) => {
+                                                    <td>{time}</td>
+                                                    {/* <td>{result.numberofUsers.length > 0 ? result.numberofUsers.map((res) => {
 
                                                         return (
                                                             <div>{res}</div>
@@ -94,7 +97,7 @@ async function Dashboard() {
                                                     })
                                                         :
                                                         "-"
-                                                    }</td>
+                                                    }</td> */}
                                                 </tr>
                                             )
                                         })

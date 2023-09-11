@@ -62,7 +62,6 @@ const Register = () => {
             } else if (response.data.status === 409) {
                 toast.error('Referral code is not valid! Because user exist there package level limit. please upgrade package');
             } else {
-                console.log("response: ", response);
                 toast.success('Register Successfully');
                 router.push(`/verify?id=${response.data.result._id}`);
             }

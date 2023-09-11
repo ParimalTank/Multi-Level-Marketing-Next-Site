@@ -17,7 +17,6 @@ const VerificationResetPassword = () => {
     useEffect(() => {
         const search = searchParams.get('email');
         setEmail(search);
-        console.log("search: ", search);
     }, [email])
 
     const [formData, setFormData] = useState({
@@ -38,7 +37,6 @@ const VerificationResetPassword = () => {
         userData["email"] = email;
 
         await axios.post("http://localhost:3000/api/verify", data).then((response) => {
-            console.log("response: ", response);
             toast.success('Verification Successfully');
             router.push(`/resetpassword?email=${email}`);
         }).catch((error) => {

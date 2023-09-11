@@ -24,8 +24,6 @@ const ForgotPassword = () => {
     const { errors } = formState
 
     const onSubmit = async (data: any) => {
-        console.log("Data submitted");
-        console.log("data: ", data);
         router.push("/verify");
 
         await axios.post("http://localhost:3000/api/forgotpassword", data).then((response) => {

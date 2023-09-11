@@ -39,6 +39,10 @@ const userSchema = new mongoose.Schema({
     userWallet: {
         type: Number,
         default: 750
+    },
+    levels: {
+        type: Number,
+        default: 0
     }
 },
     {

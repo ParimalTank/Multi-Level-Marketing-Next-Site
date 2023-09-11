@@ -24,39 +24,51 @@ export async function POST(request: Request) {
         if (email) {
             return NextResponse.json({ message: "User is Already Exist" }, { status: 409 })
         } else {
-
+            // Find user Referral Code  // This is from the User
             const checkReferralCode = await User.findOne({ referralcode: userData.referralcode });
+            console.log("This is Main User: ", checkReferralCode);
 
+            // Validate the referral code
             const packageReferaal = await PackageHistory.findOne({ referralcode: userData.referralcode })
-            console.log("packageReferaal: ", packageReferaal);
 
-            if (packageReferaal) {
+            // const result = await PackageHistory.find({ referralcode: userData.referralcode })
+            // console.log("result: ", result);
 
-                if (packageReferaal.numberofUsers.length < packageReferaal.levels) {
+            if (packageReferaal.levels > 0) {
 
-                    if (checkReferralCode) {
-                        const generateHash = await bcrypt.hash(userData.password, 10);
-                        let userReferralCode = (Math.random() + 1).toString(36).substring(6);
+                // if (packageReferaal.numberofUsers.length < packageReferaal.levels) {
+                if (checkReferralCode) {
 
-                        const user = {
-                            firstname: userData.firstname,
-                            lastname: userData.lastname,
-                            email: userData.email,
-                            password: generateHash,
-                            referralcode: userReferralCode,
-                            referralFrom: userData.referralcode,
-                            verificationCode: otp
-                        }
+                    const generateHash = await bcrypt.hash(userData.password, 10);
+                    let userReferralCode = (Math.random() + 1).toString(36).substring(6);
 
-                        const result = await User.create(user);
+                    const user = {
+                        firstname: userData.firstname,
+                        lastname: userData.lastname,
+                        email: userData.email,
+                        password: generateHash,
+                        referralcode: userReferralCode,
+                        referralFrom: userData.referralcode,
+                        verificationCode: otp,
+                    }
 
+                    const result = await User.create(user);
+                    console.log("Previous levels: ", checkReferralCode.levels);
+                    const levels = checkReferralCode.levels - 1;
+
+                    if (levels > 0) {
+
+                        console.log(" Updated levels: ", levels);
+
+                        // Decrease the Levels of User because this user refer to another user
+                        await User.findOneAndUpdate({ referralcode: userData.referralcode }, { levels: levels });
                         // await sendMail(
                         //     "Mail Verification",
                         //     JSON.stringify(userData.email),
                         //     `Verify Code :  ${otp}`
                         // );
-
                         return NextResponse.json({ result }, { status: 200 })
+
                     } else {
                         return NextResponse.json({ status: 410 })
                     }

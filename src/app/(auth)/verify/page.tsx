@@ -17,7 +17,6 @@ const Verification = () => {
     useEffect(() => {
         const search = searchParams.get('id');
         setId(search);
-        console.log("search: ", search);
     }, [id])
 
     const [formData, setFormData] = useState({
@@ -38,7 +37,6 @@ const Verification = () => {
         userData["id"] = id;
 
         await axios.post("http://localhost:3000/api/verify", data).then((response) => {
-            console.log("response: ", response);
             toast.success('Verification Successfully');
             router.push("/");
         }).catch((error) => {

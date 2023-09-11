@@ -6,10 +6,7 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
 
     try {
-        await MongoConnection();
-
         const userData = await request.json();
-        console.log("userData: From Verify ", userData);
 
         // After Reset Password
         if (userData.email) {

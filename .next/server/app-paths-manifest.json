@@ -1,4 +1,7 @@
 {
+  "/(home)/page": "app/(home)/page.js",
   "/(dashboard)/package/page": "app/(dashboard)/package/page.js",
-  "/(dashboard)/package/[id]/page": "app/(dashboard)/package/[id]/page.js"
+  "/(auth)/twofactorauth/page": "app/(auth)/twofactorauth/page.js",
+  "/(dashboard)/package/[id]/page": "app/(dashboard)/package/[id]/page.js",
+  "/(dashboard)/profile/page": "app/(dashboard)/profile/page.js"
 }

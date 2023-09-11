@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import User from "@/models/User";
 import PackageHistory from "@/models/PackageHistory";
+import MongoConnection from "@/utils/MongoConnection";
 
 export async function POST(request: Request) {
 
