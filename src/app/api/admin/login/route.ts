@@ -1,8 +1,8 @@
-import User from "@/models/User";
 import MongoConnection from "@/utils/MongoConnection";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import Admin from "@/models/Admin/Admin";
 
 export async function POST(request: Request) {
     await MongoConnection();
@@ -11,7 +11,7 @@ export async function POST(request: Request) {
         const adminData = await request.json();
         console.log("adminData: ", adminData);
 
-        const result = await User.findOne({ email: adminData.email });
+        const result = await Admin.findOne({ email: adminData.email });
         console.log("result: ", result);
 
         if (!result) {

@@ -60,7 +60,7 @@ const Register = () => {
                 toast.error('Referral code is not valid! Because user exist there package level limit. please upgrade package');
             } else {
                 toast.success('Register Successfully');
-                router.push(`/verify?id=${response.data.result._id}`);
+                router.push(`/admin/verify?id=${response.data.result._id}`);
             }
 
         }).catch((error) => {

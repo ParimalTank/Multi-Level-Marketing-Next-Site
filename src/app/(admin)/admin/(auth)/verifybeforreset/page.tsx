@@ -36,9 +36,9 @@ const VerificationResetPassword = () => {
         const userData = data;
         userData["email"] = email;
 
-        await axios.post("http://localhost:3000/api/verify", data).then((response) => {
+        await axios.post("http://localhost:3000/api/admin/verify", data).then((response) => {
             toast.success('Verification Successfully');
-            router.push(`/resetpassword?email=${email}`);
+            router.push(`/admin/resetpassword?email=${email}`);
         }).catch((error) => {
             toast.error('Verification Failed, Invalid OTP');
         })

@@ -72,7 +72,7 @@ const Login = () => {
                             <div className="col-md-8 col-lg-6 col-xxl-3">
                                 <div className="card mb-0">
                                     <div className="card-body">
-                                        <a href="./index.html" className="text-nowrap logo-img text-center d-block py-3 w-100">
+                                        <a href="/package" className="text-nowrap logo-img text-center d-block py-3 w-100">
                                             <img src="../assets/images/logos/dark-logo.svg" width="180" alt="" />
                                         </a>
                                         <h4 className="text-center">Login</h4>

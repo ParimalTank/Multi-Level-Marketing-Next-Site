@@ -55,7 +55,7 @@ const Login = () => {
                 toast.error('Invalid Credentials');
             } else {
                 toast.success('Login Successfully');
-                router.push("/package");
+                router.push("/admin/dashboard");
             }
         }).catch((error) => {
             console.log("error: ", error);

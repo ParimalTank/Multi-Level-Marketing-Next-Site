@@ -58,10 +58,10 @@ const ResetPassword = () => {
         const userData = data;
         userData["email"] = email;
 
-        await axios.post("http://localhost:3000/api/resetpassword", userData).then((response) => {
+        await axios.post("http://localhost:3000/api/admin/resetpassword", userData).then((response) => {
             console.log("response: ", response);
             toast.success('Password Reset Successfully');
-            router.push("/");
+            router.push("/admin/login");
         }).catch((error) => {
             toast.error('User is Already Registered');
         })
