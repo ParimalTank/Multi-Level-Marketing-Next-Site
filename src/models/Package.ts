@@ -7,7 +7,6 @@ const packageSchema = new mongoose.Schema({
     },
     imageurl: {
         type: String,
-        required: true
     },
     description: {
         type: String,

@@ -111,6 +111,9 @@ const Login = () => {
                                                 <p className="fs-4 mb-0 fw-bold">New to MLM?</p>
                                                 <a className="text-primary fw-bold ms-2" href="/admin/signup">Create an account</a>
                                             </div>
+                                            <div className='text-center' style={{ marginTop: "25px" }}>
+                                                <a className="text-primary fw-bold ms-2" href='/'>Are you a user? Click Here</a>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>

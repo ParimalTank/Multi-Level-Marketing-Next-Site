@@ -1,6 +1,4 @@
 import Admin from "@/models/Admin/Admin";
-import PackageHistory from "@/models/PackageHistory";
-import MongoConnection from "@/utils/MongoConnection";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {

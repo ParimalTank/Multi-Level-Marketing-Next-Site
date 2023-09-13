@@ -1,6 +1,4 @@
 import Admin from "@/models/Admin/Admin";
-import PackageHistory from "@/models/PackageHistory";
-import { sendMail } from "@/utils/MailSender";
 import MongoConnection from "@/utils/MongoConnection";
 import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";

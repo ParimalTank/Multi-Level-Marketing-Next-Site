@@ -57,7 +57,7 @@ const Register = () => {
             if (response.data.status === 410) {
                 toast.error('Invalid Credential');
             } else if (response.data.status === 409) {
-                toast.error('Referral code is not valid! Because user exist there package level limit. please upgrade package');
+                toast.error('User is Already Exist');
             } else {
                 toast.success('Register Successfully');
                 router.push(`/admin/verify?id=${response.data.result._id}`);

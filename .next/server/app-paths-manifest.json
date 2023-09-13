@@ -1,5 +1,12 @@
 {
-  "/api/admin/login/route": "app/api/admin/login/route.js",
-  "/(admin)/admin/(user)/profile/page": "app/(admin)/admin/(user)/profile/page.js",
+  "/api/login/route": "app/api/login/route.js",
+  "/api/user/route": "app/api/user/route.js",
+  "/api/package/route": "app/api/package/route.js",
+  "/(home)/page": "app/(home)/page.js",
+  "/(dashboard)/package/page": "app/(dashboard)/package/page.js",
+  "/(dashboard)/profile/page": "app/(dashboard)/profile/page.js",
+  "/api/package/[id]/route": "app/api/package/[id]/route.js",
+  "/(dashboard)/package/[id]/page": "app/(dashboard)/package/[id]/page.js",
+  "/(admin)/admin/(user)/user/page": "app/(admin)/admin/(user)/user/page.js",
   "/(admin)/admin/(auth)/login/page": "app/(admin)/admin/(auth)/login/page.js"
 }

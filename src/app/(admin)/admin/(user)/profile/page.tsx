@@ -1,9 +1,8 @@
 "use client"
+import { Sidebar } from '@/components/Admin/Sidebar'
 import { Navbar } from '@/components/Navbar'
-import { Sidebar } from '@/components/Sidebar'
 import axios from 'axios'
 import { getCookie } from 'cookies-next'
-import { cookies } from 'next/headers'
 import { useRouter } from 'next/navigation'
 
 import React, { useEffect, useState } from 'react'
@@ -34,27 +33,26 @@ const Profile = () => {
     const onSwitchAction = async () => {
         const token = getCookie("admin_token");
         const userId = parseJwt(token).id;
+        console.log("userId: ", userId);
 
         if (!isSwitchOn) {
 
-            await axios.post("http://localhost:3000/api/sendmail", { userId }).then((res) => {
+            await axios.post("http://localhost:3000/api/admin/sendMail", { userId }).then((res) => {
+                console.log("res from the send Mail : ", res);
                 console.log("message send")
+                router.push(`/admin/twofectorauth?id=${userId}`);
             }).catch((error) => {
                 console.log("error: ", error);
             })
-            router.push(`/twofactorauth?id=${userId}`);
         }
         setIsSwitchOn(!isSwitchOn);
     };
 
     const userData = async () => {
         const token = getCookie("admin_token");
-        console.log("token: ", token);
 
         await axios.post("http://localhost:3000/api/admin/checkvaliduser", { token }).then((res) => {
-            console.log("res: ", res);
             setUser(res.data.result);
-            console.log("res.data.result: ", res.data);
         }).catch(error => {
             console.log("error: ", error);
         })
@@ -134,8 +132,3 @@ const Profile = () => {
 }
 
 export default Profile
-
-
-// export async function getServerSideProps(){
-
-// }

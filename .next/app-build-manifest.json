@@ -5,15 +5,80 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(admin)/layout.js"
     ],
-    "/(admin)/admin/(user)/profile/page": [
+    "/(admin)/admin/(package)/packages/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(admin)/admin/(user)/profile/page.js"
+      "static/chunks/app/(admin)/admin/(package)/packages/page.js"
+    ],
+    "/(admin)/admin/(package)/purchasehistory/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(admin)/admin/(package)/purchasehistory/page.js"
+    ],
+    "/(admin)/admin/(user)/user/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(admin)/admin/(user)/user/page.js"
+    ],
+    "/(home)/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(home)/page.js"
+    ],
+    "/(home)/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(home)/layout.js"
     ],
     "/(admin)/admin/(auth)/login/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(admin)/admin/(auth)/login/page.js"
+    ],
+    "/(admin)/admin/(dashboard)/dashboard/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(admin)/admin/(dashboard)/dashboard/page.js"
+    ],
+    "/(admin)/admin/(user)/profile/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(admin)/admin/(user)/profile/page.js"
+    ],
+    "/(admin)/admin/(auth)/signup/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(admin)/admin/(auth)/signup/page.js"
+    ],
+    "/(admin)/admin/(auth)/verify/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(admin)/admin/(auth)/verify/page.js"
+    ],
+    "/(admin)/admin/(auth)/forgotpassword/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(admin)/admin/(auth)/forgotpassword/page.js"
+    ],
+    "/(dashboard)/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/layout.js"
+    ],
+    "/(dashboard)/package/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/package/page.js"
+    ],
+    "/(dashboard)/package/[id]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/package/[id]/page.js"
+    ],
+    "/(dashboard)/profile/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/profile/page.js"
     ]
   }
 }

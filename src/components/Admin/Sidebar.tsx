@@ -20,7 +20,7 @@ export const Sidebar = () => {
                             <span className="hide-menu">Home</span>
                         </li>
                         <li className="sidebar-item">
-                            <a className="sidebar-link" href="/package" aria-expanded="false">
+                            <a className="sidebar-link" href="/admin/dashboard" aria-expanded="false">
                                 <span>
                                     <i className="ti ti-layout-dashboard"></i>
                                 </span>
@@ -32,7 +32,7 @@ export const Sidebar = () => {
                             <span className="hide-menu">USER</span>
                         </li>
                         <li className="sidebar-item">
-                            <a className="sidebar-link" href="/" aria-expanded="false">
+                            <a className="sidebar-link" href="/admin/user" aria-expanded="false">
                                 <span>
                                     <i className="ti ti-user"></i>
                                 </span>
@@ -40,11 +40,19 @@ export const Sidebar = () => {
                             </a>
                         </li>
                         <li className="sidebar-item">
-                            <a className="sidebar-link" href="/" aria-expanded="false">
+                            <a className="sidebar-link" href="/admin/purchasehistory" aria-expanded="false">
                                 <span>
                                     <i className="ti ti-user"></i>
                                 </span>
                                 <span className="hide-menu">Package Purchase History</span>
+                            </a>
+                        </li>
+                        <li className="sidebar-item">
+                            <a className="sidebar-link" href="/admin/packages" aria-expanded="false">
+                                <span>
+                                    <i className="ti ti-user"></i>
+                                </span>
+                                <span className="hide-menu">Add Package</span>
                             </a>
                         </li>
                         <li className="nav-small-cap">
@@ -52,7 +60,7 @@ export const Sidebar = () => {
                             <span className="hide-menu">AUTH</span>
                         </li>
                         <li className="sidebar-item">
-                            <a className="sidebar-link" href="/" aria-expanded="false">
+                            <a className="sidebar-link" href="/admin/login" aria-expanded="false">
                                 <span>
                                     <i className="ti ti-login"></i>
                                 </span>
@@ -60,7 +68,7 @@ export const Sidebar = () => {
                             </a>
                         </li>
                         <li className="sidebar-item">
-                            <a className="sidebar-link" href="/register" aria-expanded="false">
+                            <a className="sidebar-link" href="/admin/signup" aria-expanded="false">
                                 <span>
                                     <i className="ti ti-user-plus"></i>
                                 </span>
@@ -68,7 +76,7 @@ export const Sidebar = () => {
                             </a>
                         </li>
                         <li className="sidebar-item">
-                            <a className="sidebar-link" href="/forgotpassword" aria-expanded="false">
+                            <a className="sidebar-link" href="/admin/forgotpassword" aria-expanded="false">
                                 <span>
                                     <i className="ti ti-aperture"></i>
                                 </span>

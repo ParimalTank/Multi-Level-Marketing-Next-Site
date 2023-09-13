@@ -9,10 +9,8 @@ export async function POST(request: Request) {
 
     try {
         const adminData = await request.json();
-        console.log("adminData: ", adminData);
 
         const result = await Admin.findOne({ email: adminData.email });
-        console.log("result: ", result);
 
         if (!result) {
             return NextResponse.json({ message: "Invalid User Credentials" }, { status: 409 })

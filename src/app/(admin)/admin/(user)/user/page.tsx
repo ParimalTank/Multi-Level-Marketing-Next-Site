@@ -4,9 +4,20 @@ import { Sidebar } from '@/components/Admin/Sidebar'
 import React, { useEffect, useState } from 'react'
 import Pagination from "react-js-pagination";
 import axios from 'axios';
+import { getCookie } from 'cookies-next'
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 const User = () => {
+
+    const token = getCookie("admin_token");
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!token) {
+            router.push("/admin/login");
+        }
+    }, [token])
 
     const [user, setUser] = useState();
     const [loading, setLoading] = useState(true);

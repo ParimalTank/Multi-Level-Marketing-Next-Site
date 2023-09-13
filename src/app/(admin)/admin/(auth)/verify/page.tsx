@@ -38,7 +38,7 @@ const Verification = () => {
 
         await axios.post("http://localhost:3000/api/admin/verify", data).then((response) => {
             toast.success('Verification Successfully');
-            router.push("/admin/dashboard");
+            router.push("/admin/login");
         }).catch((error) => {
             toast.error('Verification Failed, Invalid OTP');
         })
