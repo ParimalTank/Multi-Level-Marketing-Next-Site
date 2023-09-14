@@ -141,7 +141,7 @@ const AddModal = () => {
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" className="btn btn-primary" disabled={!formState.isValid}>Send message</button>
+                                    <button type="submit" className="btn btn-primary" disabled={!formState.isValid}>Add</button>
                                 </div>
                             </form>
                         </div>

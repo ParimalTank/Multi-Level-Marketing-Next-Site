@@ -68,12 +68,12 @@ const packages = () => {
                                     <div className="col-sm-6 col-xl-3" key={index}>
                                         <div className="card overflow-hidden rounded-2">
                                             <div className="position-relative">
-                                                <a href={`/package/${response._id}`}><img src={response.imageurl} className="card-img-top rounded-0" alt="..." /></a>
+                                                <a href={`/package/${response?._id}`}><img src={response?.imageurl} className="card-img-top rounded-0" alt="..." /></a>
                                                 <a href="" className="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i className="ti ti-basket fs-4"></i></a></div>
                                             <div className="card-body pt-3 p-4">
-                                                <h6 className="fw-semibold fs-4">{response.name}</h6>
+                                                <h6 className="fw-semibold fs-4">{response?.name}</h6>
                                                 <div className="d-flex align-items-center justify-content-between">
-                                                    <h6 className="fw-semibold fs-4 mb-0">${response.price}</h6>
+                                                    <h6 className="fw-semibold fs-4 mb-0">${response?.price}</h6>
                                                 </div>
                                                 <div>
                                                     <span>{response.description.length > 80 ? response?.description?.slice(0, 80) + "..." : response.description}</span>

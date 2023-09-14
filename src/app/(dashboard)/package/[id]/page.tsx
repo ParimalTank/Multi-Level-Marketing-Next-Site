@@ -21,11 +21,13 @@ export default function PackageDetails() {
 
     const Params = useParams();
     const id = Params.id;
+    console.log("id: ", id);
 
-    const Data = async (pId: any) => {
+    const Data = async () => {
         await axios.get(`http://localhost:3000/api/package/${id}`)
             .then((res) => {
                 setProductDetails(res.data.result);
+                console.log("res.data.result: ", res.data.result);
             }).catch(error => {
                 console.log("Error While Getting the Data");
             })
@@ -72,13 +74,13 @@ export default function PackageDetails() {
                     <div className='row'>
 
                         <div className='col' style={{ width: "500px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                            <img src={productdetails.imageurl} className="card-img-top rounded-0" style={{ width: "200px", height: "200px" }} alt="Package" />
+                            <img src={productdetails?.imageurl} className="card-img-top rounded-0" style={{ width: "200px", height: "200px" }} alt="Package" />
                         </div>
 
                         <div className='col' style={{ marginLeft: "100px" }} >
-                            <h4>Package Name : {productdetails.name}</h4>
-                            <span className='mt-3'>Package Description : {productdetails.description}</span>
-                            <h5 className='mt-3'>Price : ${productdetails.price}</h5>
+                            <h4>Package Name : {productdetails?.name}</h4>
+                            <span className='mt-3'>Package Description : {productdetails?.description}</span>
+                            <h5 className='mt-3'>Price : ${productdetails?.price}</h5>
                             <button onClick={handlePurchase} style={{ padding: "10px", paddingLeft: "20px", paddingRight: "20px", color: "white", backgroundColor: "#0000EB" }}>Buy</button>
                         </div>
                     </div>

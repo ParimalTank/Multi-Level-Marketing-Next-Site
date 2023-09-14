@@ -157,7 +157,7 @@ const EditModal = (props: any) => {
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" className="btn btn-primary" disabled={!formState.isValid}>Send message</button>
+                                    <button type="submit" className="btn btn-primary" disabled={!formState.isValid}>Update</button>
                                 </div>
                             </form>
                         </div>
