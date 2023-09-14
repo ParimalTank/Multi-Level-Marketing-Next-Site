@@ -3,10 +3,7 @@ import { Navbar } from '@/components/Navbar'
 import { Sidebar } from '@/components/Sidebar'
 import axios from 'axios'
 import { getCookie } from 'cookies-next'
-import { cookies } from 'next/headers'
 import { useRouter } from 'next/navigation'
-import jwt from "jsonwebtoken";
-
 import React, { useEffect, useState } from 'react'
 
 const Profile = () => {
@@ -21,7 +18,7 @@ const Profile = () => {
         }
     }, [token])
 
-    const [user, setUser] = useState();
+    const [user, setUser] = useState<any>();
 
     const [isSwitchOn, setIsSwitchOn] = useState(false);
 
@@ -52,7 +49,6 @@ const Profile = () => {
         let userData;
         let packageDetails;
         const token = getCookie("token");
-        console.log("token: ", token);
 
         await axios.post("http://localhost:3000/api/user", { token }).then((res) => {
             setUser(res.data.result);
@@ -71,7 +67,6 @@ const Profile = () => {
                 data-sidebar-position="fixed" data-header-position="fixed">
 
                 <Sidebar />
-                {/* This is Used For Sidebar */}
                 <div className="body-wrapper">
                     <Navbar />
                     <div className="container-fluid">
@@ -143,8 +138,3 @@ const Profile = () => {
 }
 
 export default Profile
-
-
-// export async function getServerSideProps(){
-
-// }

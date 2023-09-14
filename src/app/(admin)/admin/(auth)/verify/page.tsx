@@ -15,7 +15,7 @@ const Verification = () => {
     const searchParams = useSearchParams();
 
     useEffect(() => {
-        const search = searchParams.get('id');
+        const search: any = searchParams.get('id');
         setId(search);
     }, [id])
 

@@ -14,9 +14,8 @@ const ResetPassword = () => {
     const searchParams = useSearchParams();
 
     useEffect(() => {
-        const search = searchParams.get('email');
+        const search: any = searchParams.get('email');
         setEmail(search);
-        console.log("search: ", search);
     }, [email])
 
     const [formData, setFormData] = useState({

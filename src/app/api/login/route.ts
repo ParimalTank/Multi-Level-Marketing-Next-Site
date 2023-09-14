@@ -27,7 +27,8 @@ export async function POST(request: Request) {
         if (result.isActive === "false") {
             return NextResponse.json({ status: 410 })
         } else {
-            const token = jwt.sign({ id: result._id }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 * 7 })
+            const secrat: any = process.env.JWT_SECRET;
+            const token = jwt.sign({ id: result._id }, secrat, { expiresIn: 60 * 60 * 24 * 7 })
 
             const response = NextResponse.json({ status: 200 });
 

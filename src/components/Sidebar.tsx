@@ -27,6 +27,14 @@ export const Sidebar = () => {
                                 <span className="hide-menu">Dashboard</span>
                             </a>
                         </li>
+                        <li className="sidebar-item">
+                            <a className="sidebar-link" href="/usertree" aria-expanded="false">
+                                <span>
+                                    <i className="ti ti-layout-dashboard"></i>
+                                </span>
+                                <span className="hide-menu">User Tree</span>
+                            </a>
+                        </li>
                         <li className="nav-small-cap">
                             <i className="ti ti-dots nav-small-cap-icon fs-4"></i>
                             <span className="hide-menu">AUTH</span>

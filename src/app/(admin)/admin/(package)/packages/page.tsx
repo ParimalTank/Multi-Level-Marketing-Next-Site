@@ -12,7 +12,7 @@ import toast from 'react-hot-toast'
 const packages = () => {
 
     const [loading, setLoading] = useState(true);
-    const [packages, setPackages] = useState();
+    const [packages, setPackages] = useState<any[]>();
 
     const getUserData = async () => {
         setLoading(true);
@@ -76,7 +76,7 @@ const packages = () => {
                                                     <h6 className="fw-semibold fs-4 mb-0">${response.price}</h6>
                                                 </div>
                                                 <div>
-                                                    <span>{response.description.length > 80 ? response?.description.slice(0, 80) + "..." : response.description}</span>
+                                                    <span>{response.description.length > 80 ? response?.description?.slice(0, 80) + "..." : response.description}</span>
                                                 </div>
                                                 <div className='d-flex justify-content-between' style={{ marginTop: "25px" }}>
                                                     <EditModal packages={response} />

@@ -6,7 +6,7 @@ import axios from 'axios';
 import { cookies } from 'next/headers';
 
 async function Dashboard() {
-    let data;
+    let data: any;
     const getPackageData = async () => {
         await axios.get("http://localhost:3000/api/package").then((res) => {
             data = res.data.result;
@@ -16,8 +16,8 @@ async function Dashboard() {
     }
     await getPackageData();
 
-    let userData;
-    let packageDetails;
+    let userData: any;
+    let packageDetails: any;
     const getUserData = async () => {
         const token = cookies().get("token")?.value
         await axios.post("http://localhost:3000/api/user", { token }).then((res) => {
@@ -41,7 +41,7 @@ async function Dashboard() {
                     <h3 style={{ textAlign: "end" }}>Current Balance : {userData.userWallet}</h3>
                     <div className="row">
                         {
-                            data?.map((response) => {
+                            data.map((response: any) => {
 
                                 return (
                                     <div className="col-sm-6 col-xl-3">
@@ -55,7 +55,7 @@ async function Dashboard() {
                                                     <h6 className="fw-semibold fs-4 mb-0">${response.price}</h6>
                                                 </div>
                                                 <div>
-                                                    <span>{response.description.length > 80 ? response?.description.slice(0, 80) + "..." : response.description}</span>
+                                                    <span>{response.description.length > 80 ? response?.description?.slice(0, 80) + "..." : response.description}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -78,7 +78,7 @@ async function Dashboard() {
                                 </thead>
                                 <tbody>
                                     {
-                                        packageDetails?.map((result, index) => {
+                                        packageDetails.map((result: any, index: number) => {
 
                                             const date = new Date(result.createdAt);
                                             const time = new Date(date).toLocaleString(undefined, { timeZone: 'Asia/Kolkata' });

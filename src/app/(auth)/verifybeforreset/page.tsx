@@ -15,7 +15,7 @@ const VerificationResetPassword = () => {
     const searchParams = useSearchParams();
 
     useEffect(() => {
-        const search = searchParams.get('email');
+        const search: any = searchParams.get('email');
         setEmail(search);
     }, [email])
 

@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import User from "@/models/User";
 import PackageHistory from "@/models/PackageHistory";
 
-export async function GET(request: Request, { params }) {  // get the id from params
+export async function GET(request: Request, { params }: { params: any }) {  // get the id from params
     await MongoConnection();
 
     // Id from the Params
@@ -19,14 +19,14 @@ export async function GET(request: Request, { params }) {  // get the id from pa
     }
 }
 
-export async function POST(request: Request, { params }) {  // get the id from params
-    // await MongoConnection();
+export async function POST(request: Request, { params }: { params: any }) {  // get the id from params
+    await MongoConnection();
 
     // Get Token From the Header
-    const accessToken = request.headers.get("cookie")?.substring(6);
-
+    const accessToken: any = request.headers.get("cookie")?.substring(6);
+    const secrat: any = process.env.NEXT_PUBLIC_JWT_SECRET_KEY;
     // Decode the Token from the token
-    const decoded = jwt.verify(accessToken, process.env.NEXT_PUBLIC_JWT_SECRET_KEY);
+    const decoded: any = jwt.verify(accessToken, secrat);
     const userId = decoded.id; // Get User Id From the Params
 
     // This is Package Id
@@ -73,57 +73,57 @@ export async function POST(request: Request, { params }) {  // get the id from p
                     // If User is Not Buy a Referral user Package commission is not applying them
                     if (findReferral) {
 
-                        console.log("levels: ", levels);
+                        // if (findReferral?.packagePrice === packagePrice) {
 
-                        if (findReferral?.packagePrice === packagePrice) {
+                        // Add Commission to referral user
+                        const packageUser = await User.findOne({ _id: findReferral.userId });
 
-                            // Add Commission to referral user
-                            const packageUser = await User.findOne({ _id: findReferral.userId });
+                        let commission;
 
-                            let commission;
-
-                            if (packagePrice === 50 || packagePrice === 100) {
-                                // Wallet value + commission
-                                commission = packageUser.userWallet + ((packagePrice * 5) / 100);
-                            } else {
-                                commission = packageUser.userWallet + ((packagePrice * 25) / 100);
-                            }
-
-                            // Update Wallet Value and their value
-                            await User.findByIdAndUpdate({ _id: userId }, { userWallet: updatedWallet, levels: totalLevel });
-
-                            // ADD Commission to referral user
-                            await User.findByIdAndUpdate({ _id: findReferral.userId }, { userWallet: commission })
-
-                            // Save the Package History
-                            const SavePackageHistory = {
-                                name: result.name,
-                                packageId: id,
-                                packagePrice: result.price,
-                                userId: userId,
-                                levels: result?.levels,
-                                referralcode: user.referralcode,
-                                numberofUsers: []
-                            }
-
-                            const packageHis = await PackageHistory.create(SavePackageHistory);
-                            return NextResponse.json({ result: result }, { status: 200 });
+                        if (packagePrice === 50 || packagePrice === 100) {
+                            // Wallet value + commission
+                            commission = packageUser.userWallet + ((packagePrice * 5) / 100);
                         } else {
-                            // Save the Package History
-                            const SavePackageHistory = {
-                                name: result.name,
-                                packageId: id,
-                                packagePrice: result.price,
-                                userId: userId,
-                                levels: result?.levels,
-                                referralcode: user.referralcode,
-                                numberofUsers: []
-                            }
-
-                            await User.findByIdAndUpdate({ _id: userId }, { userWallet: updatedWallet, levels: totalLevel });
-                            await PackageHistory.create(SavePackageHistory);
-                            return NextResponse.json({ result: result }, { status: 200 });
+                            commission = packageUser.userWallet + ((packagePrice * 25) / 100);
                         }
+                        console.log("commission: ", commission);
+
+                        // Update Wallet Value and their value
+                        await User.findByIdAndUpdate({ _id: userId }, { userWallet: updatedWallet, levels: totalLevel });
+
+                        // ADD Commission to referral user
+                        await User.findByIdAndUpdate({ _id: findReferral.userId }, { userWallet: commission })
+
+                        // Save the Package History
+                        const SavePackageHistory = {
+                            name: result.name,
+                            packageId: id,
+                            packagePrice: result.price,
+                            userId: userId,
+                            levels: result?.levels,
+                            referralcode: user.referralcode,
+                            numberofUsers: []
+                        }
+
+                        const packageHis = await PackageHistory.create(SavePackageHistory);
+                        return NextResponse.json({ result: result }, { status: 200 });
+
+                        // } else {
+                        //     // Save the Package History
+                        //     const SavePackageHistory = {
+                        //         name: result.name,
+                        //         packageId: id,
+                        //         packagePrice: result.price,
+                        //         userId: userId,
+                        //         levels: result?.levels,
+                        //         referralcode: user.referralcode,
+                        //         numberofUsers: []
+                        //     }
+
+                        //     await User.findByIdAndUpdate({ _id: userId }, { userWallet: updatedWallet, levels: totalLevel });
+                        //     await PackageHistory.create(SavePackageHistory);
+                        //     return NextResponse.json({ result: result }, { status: 200 });
+                        // }
                     } else {
 
                         // Save the Package History

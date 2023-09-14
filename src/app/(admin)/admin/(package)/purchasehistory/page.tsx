@@ -4,7 +4,6 @@ import { Sidebar } from '@/components/Admin/Sidebar'
 import React, { useEffect, useState } from 'react'
 import Pagination from "react-js-pagination";
 import axios from 'axios';
-import toast from 'react-hot-toast';
 import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
 
@@ -19,7 +18,7 @@ const PurchaseHistory = () => {
         }
     }, [token])
 
-    const [user, setUser] = useState();
+    const [user, setUser] = useState<any>();
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(5);
@@ -58,14 +57,11 @@ const PurchaseHistory = () => {
             <div className="body-wrapper">
                 <Navbar />
                 <div className="container-fluid">
-
                     <div className='row'>
-
                         {loading ? (
                             <p>Loading...</p>
                         ) : (
                             <>
-
                                 <table className="table">
                                     <thead>
                                         <tr>
@@ -74,7 +70,6 @@ const PurchaseHistory = () => {
                                             <th scope='col'>Price</th>
                                             <th scope='col'>Level</th>
                                             <th scope='col'>ReferralCode From</th>
-
                                         </tr>
                                     </thead>
                                     <tbody className="table-group-divider">

@@ -20,7 +20,7 @@ export async function sendMail(subject: string, toEmail: string, otpText: string
         text: otpText,
     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
+    transporter.sendMail(mailOptions, function (error: any, info) {
         if (error) {
             throw new Error(error);
         } else {

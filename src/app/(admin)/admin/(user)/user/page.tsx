@@ -19,7 +19,7 @@ const User = () => {
         }
     }, [token])
 
-    const [user, setUser] = useState();
+    const [user, setUser] = useState<any>();
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(5);
@@ -94,13 +94,13 @@ const User = () => {
                                         </tr>
                                     </thead>
                                     <tbody className="table-group-divider">
-                                        {currentPosts && currentPosts.map((admin: any, index) => (
+                                        {currentPosts && currentPosts.map((admin: any, index: number) => (
                                             <tr key={index}>
                                                 <th scope='row'>{index + 1}</th>
-                                                <td>{admin.firstname}</td>
-                                                <td>{admin.lastname}</td>
-                                                <td>{admin.email}</td>
-                                                <td>{admin.isActive === "true" ? "Active" : "InActive"}</td>
+                                                <td>{admin?.firstname}</td>
+                                                <td>{admin?.lastname}</td>
+                                                <td>{admin?.email}</td>
+                                                <td>{admin?.isActive === "true" ? "Active" : "InActive"}</td>
                                                 <td><div className="form-check form-switch">
                                                     <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" onChange={e => onSwitchAction(admin.isActive, admin._id)} checked={admin.isActive === "true" ? true : false} />
                                                     {/* <label className="form-check-label" htmlFor="flexSwitchCheckChecked"></label> */}

@@ -1,6 +1,6 @@
 import Package from "@/models/Package";
 import MongoConnection from "@/utils/MongoConnection";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: Request) {
 
@@ -65,7 +65,7 @@ export async function PATCH(request: Request) {
     }
 }
 
-export async function DELETE(request: Request) {
+export async function DELETE(request: NextRequest) {
 
     MongoConnection();
     try {

@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     await MongoConnection();
 
     // Random 6 digit OTP Generator
-    let otp = Math.random();
+    let otp: any = Math.random();
     otp = otp * 1000000;
     otp = parseInt(otp);
 

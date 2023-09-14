@@ -1,15 +1,22 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-export const TwoFectorAuth = () => {
+const TwoFectorAuth = () => {
 
     const router = useRouter();
+    const [id, setId] = useState();
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const search: any = searchParams.get('id');
+        setId(search);
+    }, [id])
 
     const [formData, setFormData] = useState({
         otp: ""

@@ -8,15 +8,14 @@ export async function POST(request: Request) {
 
     await MongoConnection();
     const accessToken = await request.json();
+    const secret: any = process.env.NEXT_PUBLIC_JWT_SECRET_KEY;
 
     try {
         // Decode the Token from the token
-        const decoded = jwt.verify(accessToken.token, process.env.NEXT_PUBLIC_JWT_SECRET_KEY);
+        const decoded: any = jwt.verify(accessToken.token, secret);
         const userId = decoded.id; // Get User Id From the Params
-        console.log("userId: ", userId);
 
         const user = await Admin.findOne({ _id: userId });
-        console.log("user: ", user);
 
         return NextResponse.json({ result: user }, { status: 200 });
     } catch (error) {

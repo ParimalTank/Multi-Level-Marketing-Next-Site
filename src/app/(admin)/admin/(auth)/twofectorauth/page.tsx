@@ -7,7 +7,8 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export const TwoFectorAuth = () => {
+/* eslint-disable-next-line padded-blocks */
+const TwoFectorAuth = () => {
 
     const router = useRouter();
     const searchParams = useSearchParams()

@@ -14,7 +14,7 @@ const ResetPassword = () => {
     const searchParams = useSearchParams();
 
     useEffect(() => {
-        const search = searchParams.get('email');
+        const search: any = searchParams.get('email');
         setEmail(search);
         console.log("search: ", search);
     }, [email])
@@ -59,7 +59,6 @@ const ResetPassword = () => {
         userData["email"] = email;
 
         await axios.post("http://localhost:3000/api/admin/resetpassword", userData).then((response) => {
-            console.log("response: ", response);
             toast.success('Password Reset Successfully');
             router.push("/admin/login");
         }).catch((error) => {
