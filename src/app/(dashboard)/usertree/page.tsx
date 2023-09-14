@@ -5,7 +5,7 @@ import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 // import Tree from 'react-d3-tree'
 const Tree = dynamic(() => import('react-d3-tree'), {
     loading: () => <p>Loading...</p>,
@@ -14,7 +14,7 @@ const Tree = dynamic(() => import('react-d3-tree'), {
 
 const useCenteredTree = (defaultTranslate = { x: 0, y: 0 }) => {
     const [translate, setTranslate] = useState(defaultTranslate);
-    const containerRef = useCallback((containerElem: any) => {
+    const containerRef: any = useCallback((containerElem: any) => {
         if (containerElem !== null) {
             const { width, height } = containerElem.getBoundingClientRect();
             setTranslate({ x: width / 4, y: height / 4 });
@@ -57,6 +57,7 @@ const usertree = () => {
         }
     }, [token])
 
+
     return (
         <>
             <div className="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -68,13 +69,13 @@ const usertree = () => {
                     <Navbar />
                     <div className="container-fluid">
                         <div className='row'>
-                            {/* <div id="treeWrapper" ref={containerRef} className='d-flex justify-content-center align-item-center'
+                            <div id="treeWrapper" ref={containerRef} className='d-flex justify-content-center align-item-center'
                                 style={{
                                     width: "100%",
                                     height: "100vh"
                                 }}>
                                 <Tree data={orgChart} nodeSize={{ x: 180, y: 180 }} orientation="vertical" draggable transitionDuration={500} translate={translate} zoomable={true} />
-                            </div> */}
+                            </div>
                         </div>
                     </div>
                 </div>
