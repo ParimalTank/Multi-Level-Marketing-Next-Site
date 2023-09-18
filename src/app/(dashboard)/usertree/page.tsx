@@ -28,7 +28,6 @@ const usertree = () => {
     const router = useRouter()
     const [translate, containerRef] = useCenteredTree();
     const [users, setUsers] = useState<any[]>();
-    console.log("users: ", users);
 
     const token = getCookie("token");
 

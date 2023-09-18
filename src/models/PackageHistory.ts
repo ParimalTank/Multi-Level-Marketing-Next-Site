@@ -25,9 +25,6 @@ const packageHistorySchema = new mongoose.Schema({
     referralcode: {
         type: String,
         required: true
-    },
-    numberofUsers: {
-        type: [String],
     }
 },
     {

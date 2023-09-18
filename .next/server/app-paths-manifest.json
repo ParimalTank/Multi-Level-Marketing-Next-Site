@@ -1,10 +1,4 @@
 {
-  "/api/user/route": "app/api/user/route.js",
-  "/api/usertree/route": "app/api/usertree/route.js",
-  "/api/package/route": "app/api/package/route.js",
-  "/(home)/page": "app/(home)/page.js",
-  "/(dashboard)/package/page": "app/(dashboard)/package/page.js",
-  "/api/package/[id]/route": "app/api/package/[id]/route.js",
-  "/(dashboard)/usertree/page": "app/(dashboard)/usertree/page.js",
-  "/(dashboard)/package/[id]/page": "app/(dashboard)/package/[id]/page.js"
+  "/api/admin/login/route": "app/api/admin/login/route.js",
+  "/(admin)/admin/(auth)/login/page": "app/(admin)/admin/(auth)/login/page.js"
 }

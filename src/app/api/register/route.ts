@@ -1,4 +1,3 @@
-
 import PackageHistory from "@/models/PackageHistory";
 import User from "@/models/User";
 import { sendMail } from "@/utils/MailSender";
@@ -36,7 +35,6 @@ export async function POST(request: Request) {
 
             if (packageReferaal.levels > 0) {
 
-                // if (packageReferaal.numberofUsers.length < packageReferaal.levels) {
                 if (checkReferralCode) {
 
                     const generateHash = await bcrypt.hash(userData.password, 10);

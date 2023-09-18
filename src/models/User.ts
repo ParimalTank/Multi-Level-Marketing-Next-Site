@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
         default: false
     },
     verificationCode: {
-        type: String
+        type: Number
     },
     isActive: {
         type: String,

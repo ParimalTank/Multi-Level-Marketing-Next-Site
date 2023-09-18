@@ -11,13 +11,13 @@ import { useRouter, useSearchParams } from 'next/navigation';
 const VerificationResetPassword = () => {
 
     const router = useRouter();
-    const [email, setEmail] = useState();
+    const [token, setToken] = useState();
     const searchParams = useSearchParams();
 
     useEffect(() => {
-        const search: any = searchParams.get('email');
-        setEmail(search);
-    }, [email])
+        const search: any = searchParams.get('token');
+        setToken(search);
+    }, [token])
 
     const [formData, setFormData] = useState({
         otp: ""
@@ -34,11 +34,11 @@ const VerificationResetPassword = () => {
     const onSubmit = async (data: any) => {
 
         const userData = data;
-        userData["email"] = email;
+        userData["token"] = token;
 
         await axios.post("http://localhost:3000/api/verify", data).then((response) => {
             toast.success('Verification Successfully');
-            router.push(`/resetpassword?email=${email}`);
+            router.push(`/resetpassword?token=${token}`);
         }).catch((error) => {
             toast.error('Verification Failed, Invalid OTP');
         })
@@ -63,7 +63,7 @@ const VerificationResetPassword = () => {
                                         <form onSubmit={handleSubmit(onSubmit)}>
                                             <div className="mb-3">
                                                 <label htmlFor="exampleInputEmail1" className="form-label">Enter OTP</label>
-                                                <input type="number" className="form-control" id="exampleInputEmail1" placeholder='otp' defaultValue={formData.otp} onChange={(e) => setValue("otp", e.target.value, { shouldValidate: true })} aria-describedby="emailHelp" />
+                                                <input type="text" className="form-control" id="exampleInputEmail1" placeholder='otp' defaultValue={formData.otp} onChange={(e) => setValue("otp", e.target.value, { shouldValidate: true })} aria-describedby="emailHelp" />
                                                 {errors.otp && (
                                                     <div className="text-danger">
                                                         {errors.otp.message}

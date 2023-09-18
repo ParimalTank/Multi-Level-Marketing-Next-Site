@@ -2,6 +2,7 @@ import MongoConnection from "@/utils/MongoConnection";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import Admin from "@/models/Admin/Admin";
+import jwt from "jsonwebtoken";
 
 export async function POST(request: Request) {
 
@@ -10,12 +11,15 @@ export async function POST(request: Request) {
 
         const userData = await request.json();
 
-        const user = await Admin.findOne({ email: userData.email });
+        const secret: any = process.env.NEXT_PUBLIC_JWT_SECRET_KEY;
+        const decoded: any = jwt.verify(userData.token, secret);
+
+        const user = await Admin.findOne({ email: decoded.email });
 
         if (user) {
             const generateHash = await bcrypt.hash(userData.password, 10);
 
-            await Admin.findOneAndUpdate({ email: userData.email }, { password: generateHash })
+            await Admin.findOneAndUpdate({ email: decoded.email }, { password: generateHash })
 
             return NextResponse.json({ status: 200 });
         } else {

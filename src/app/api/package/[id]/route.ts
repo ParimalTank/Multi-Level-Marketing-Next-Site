@@ -102,7 +102,6 @@ export async function POST(request: Request, { params }: { params: any }) {  // 
                             userId: userId,
                             levels: result?.levels,
                             referralcode: user.referralcode,
-                            numberofUsers: []
                         }
 
                         const packageHis = await PackageHistory.create(SavePackageHistory);
@@ -134,7 +133,6 @@ export async function POST(request: Request, { params }: { params: any }) {  // 
                             userId: userId,
                             levels: result?.levels,
                             referralcode: user.referralcode,
-                            numberofUsers: []
                         }
 
                         await User.findByIdAndUpdate({ _id: userId }, { userWallet: updatedWallet, levels: totalLevel });

@@ -1,4 +1,5 @@
 import User from "@/models/User";
+import { sendMail } from "@/utils/MailSender";
 import MongoConnection from "@/utils/MongoConnection";
 import { NextResponse } from "next/server";
 
@@ -14,8 +15,6 @@ export async function POST(request: Request) {
     try {
 
         const user = await request.json();
-        console.log("user from send: ", user);
-        console.log("otp: ", otp);
 
         const result = await User.findOneAndUpdate({ _id: user.id }, { verificationCode: otp });
 
@@ -23,11 +22,11 @@ export async function POST(request: Request) {
             return NextResponse.json({ status: 410 })
         }
 
-        // await sendMail(
-        //     "Mail Verification",
-        //     JSON.stringify(userData.email),
-        //     `Verify Code :  ${otp}`
-        // );
+        await sendMail(
+            "Mail Verification",
+            JSON.stringify(user.email),
+            `Verify Code :  ${otp}`
+        );
 
         return NextResponse.json({ status: 200 });
     } catch (error) {

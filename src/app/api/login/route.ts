@@ -9,13 +9,11 @@ export async function POST(request: Request) {
 
     try {
         const userData = await request.json();
-        console.log("userData: ", userData);
 
         const result = await User.findOne({ email: userData.email });
-        console.log("result: ", result);
 
         if (!result) {
-            return NextResponse.json({ message: "Invalid User Credentials" }, { status: 409 })
+            return NextResponse.json({ status: 409 })
         }
 
         const match = await bcrypt.compare(userData.password, result.password);

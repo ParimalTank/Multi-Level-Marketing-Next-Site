@@ -1,5 +1,4 @@
-
-
+import jwt from "jsonwebtoken";
 import Admin from "@/models/Admin/Admin";
 import { sendMail } from "@/utils/MailSender";
 import MongoConnection from "@/utils/MongoConnection";
@@ -18,11 +17,11 @@ export async function POST(request: Request) {
     try {
 
         const adminData = await request.json();
-        console.log("adminData: ", adminData);
 
         const user = await Admin.findOne({ email: adminData.email });
-        console.log("user: ", user);
 
+        const secrat: any = process.env.JWT_SECRET;
+        const token = jwt.sign({ id: user._id, email: user.email }, secrat, { expiresIn: 60 * 60 * 24 * 7 });
         if (user) {
 
             // await sendMail(
@@ -30,8 +29,9 @@ export async function POST(request: Request) {
             //     JSON.stringify(adminData.email),
             //     `Verify Code :  ${otp}`
             // );
+
             await Admin.findOneAndUpdate({ email: adminData.email }, { verificationCode: otp })
-            return NextResponse.json({ email: adminData.email }, { status: 200 })
+            return NextResponse.json({ token: token }, { status: 200 })
 
         } else {
             return NextResponse.json({ message: "Invalid Email Id" }, { status: 409 })

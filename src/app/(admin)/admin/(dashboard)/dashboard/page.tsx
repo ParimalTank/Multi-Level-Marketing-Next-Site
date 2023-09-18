@@ -23,7 +23,7 @@ const Dashboard = () => {
                                             <img src="https://t3.ftcdn.net/jpg/05/17/79/88/360_F_517798849_WuXhHTpg2djTbfNf0FQAjzFEoluHpnct.jpg" className="card-img-top" style={{ width: "55px", height: "50px" }} alt="users" />
                                             <h3 style={{ paddingLeft: "20px" }}>Total Active User</h3>
                                         </div>
-                                        <h3 className='text-center'>50</h3>
+                                        <h3 className='text-center'>...</h3>
                                         <div className='text-end'>
                                             <h5><a href="/admin/user" className='justify-content-end'>View</a></h5>
                                         </div>

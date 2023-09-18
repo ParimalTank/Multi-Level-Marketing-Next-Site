@@ -1,4 +1,5 @@
 import Admin from "@/models/Admin/Admin";
+import { sendMail } from "@/utils/MailSender";
 import MongoConnection from "@/utils/MongoConnection";
 import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
@@ -8,7 +9,7 @@ export async function POST(request: Request) {
     await MongoConnection();
 
     // Random 6 digit OTP Generator
-    let otp:any = Math.random();
+    let otp: any = Math.random();
     otp = otp * 1000000;
     otp = parseInt(otp);
 

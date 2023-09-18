@@ -25,7 +25,7 @@ const Verification = () => {
 
     // form validation rules 
     const validationSchema = Yup.object().shape({
-        otp: Yup.string().required("OTP is required"),
+        otp: Yup.number().required("OTP is required"),
     });
 
     const { register, setValue, handleSubmit, formState } = useForm({ mode: "onChange", resolver: yupResolver(validationSchema) });

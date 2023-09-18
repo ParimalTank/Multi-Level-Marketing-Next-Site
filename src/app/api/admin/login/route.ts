@@ -13,7 +13,7 @@ export async function POST(request: Request) {
         const result = await Admin.findOne({ email: adminData.email });
 
         if (!result) {
-            return NextResponse.json({ message: "Invalid User Credentials" }, { status: 409 })
+            return NextResponse.json({ status: 409 })
         }
 
         const match = await bcrypt.compare(adminData.password, result.password);

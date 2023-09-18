@@ -1,13 +1,16 @@
 "use client"
 import { deleteCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
+import { useRouter } from 'next/navigation';
 import React from 'react'
 
 export const Navbar = () => {
 
+    const router = useRouter();
+
     const handleClick = async () => {
-        await deleteCookie("token");
-        window.location.reload();
+        await deleteCookie("admin_token");
+        router.push("/admin/login");
     }
 
     return (

@@ -4,24 +4,25 @@ import { sendMail } from "@/utils/MailSender";
 import MongoConnection from "@/utils/MongoConnection";
 import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
-
+import jwt from "jsonwebtoken";
 
 export async function POST(request: Request) {
 
     await MongoConnection();
 
     // Random 6 digit OTP Generator
-    let otp:any = Math.random();
+    let otp: any = Math.random();
     otp = otp * 1000000;
     otp = parseInt(otp);
 
     try {
 
         const userData = await request.json();
-        console.log("userData: ", userData);
 
         const user = await User.findOne({ email: userData.email });
-        console.log("user: ", user);
+
+        const secrat: any = process.env.JWT_SECRET;
+        const token = jwt.sign({ id: user._id, email: user.email }, secrat, { expiresIn: 60 * 60 * 24 * 7 });
 
         if (user) {
 
@@ -31,7 +32,7 @@ export async function POST(request: Request) {
             //     `Verify Code :  ${otp}`
             // );
             await User.findOneAndUpdate({ email: userData.email }, { verificationCode: otp })
-            return NextResponse.json({ email: userData.email }, { status: 200 })
+            return NextResponse.json({ token: token }, { status: 200 })
 
         } else {
             return NextResponse.json({ message: "Invalid Email Id" }, { status: 409 })

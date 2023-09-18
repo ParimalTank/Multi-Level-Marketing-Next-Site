@@ -1,5 +1,6 @@
 import Admin from "@/models/Admin/Admin";
 import { NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
 
 export async function POST(request: Request) {
 
@@ -7,10 +8,15 @@ export async function POST(request: Request) {
         const userData = await request.json();
 
         // After Reset Password
-        if (userData.email) {
-            console.log("condition userData.email: ", userData.email);
+        if (userData.token) {
+            console.log("userData.token: From Admin Verification", userData.token);
 
-            const user = await Admin.findOne({ email: userData.email });
+            const secret: any = process.env.NEXT_PUBLIC_JWT_SECRET_KEY;
+            const decoded: any = jwt.verify(userData.token, secret);
+
+            const userEmail = decoded.email;
+
+            const user = await Admin.findOne({ email: userEmail });
 
             if (user) {
                 if (Number(user.verificationCode) === Number(userData.otp)) {

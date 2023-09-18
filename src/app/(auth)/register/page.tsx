@@ -20,12 +20,11 @@ const Register = () => {
         referralcode: ""
     })
 
-    // for password validation
-    const lowercaseRegEx = /(?=.*[a-z])/;
-    const uppercaseRegEx = /(?=.*[A-Z])/;
-    const numericRegEx = /(?=.*[0-9])/;
-    const lengthRegEx = /(?=.{8,})/;
-    const specialRegEx = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/
+    const [upper, setUpper] = useState();
+    const [lower, setLower] = useState();
+    const [numeric, setNumeric] = useState();
+    const [passLength, setPassLength] = useState();
+    const [special, setSpecial] = useState();
 
     // form validation rules 
     const validationSchema = Yup.object().shape({
@@ -33,18 +32,31 @@ const Register = () => {
         lastname: Yup.string().required('Lastname is required'),
         email: Yup.string().email("Invalid Email").required("Email is required"),
         password: Yup.string().required('Password is required')
-            .matches(
-                lowercaseRegEx,
-                "Must contains one lowercase alphabetical character!"
-            )
-            .matches(
-                uppercaseRegEx,
-                "Must contains one uppercase alphabetical character"
-            )
-            .matches(numericRegEx, "Must contains one Numeric character!")
-            .matches(specialRegEx, "Must contains one Special Character")
-            .min(8, "Password length should be at least 8 characters")
-            .max(32, "Password cannot exceed more than 32 characters"),
+            .test('uppercaselatter', 'Password must contain 1 uppercase latter', (value) => {
+                const upper: any = /[A-Z]/.test(value);
+                setUpper(upper);
+                return /[A-Z]/.test(value);
+            })
+            .test('lowercaselatter', 'Password must contain 1 lowercase latter', (value) => {
+                const lower: any = /(?=.*[a-z])/.test(value);
+                setLower(lower);
+                return /(?=.*[a-z])/.test(value);
+            })
+            .test('numeric', 'Password must contain 1 numeric', (value) => {
+                const numeric: any = /(?=.*[0-9])/.test(value)
+                setNumeric(numeric);
+                return /(?=.*[0-9])/.test(value);
+            })
+            .test('special', 'Password must contain 1 numeric', (value) => {
+                const special: any = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(value);
+                setSpecial(special);
+                return /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(value);
+            })
+            .test('special', 'Password length must between max 32 , min 8', (value) => {
+                const passlength: any = /(?=.{8,32})/.test(value);
+                setPassLength(passlength);
+                return /(?=.{8,32})/.test(value);
+            }),
         confirmpassword: Yup.string().required('Password is required').oneOf([Yup.ref("password")], "Passwords do not match"),
         referralcode: Yup.string().required('Referral code is required').max(6, "Referral must have maximum 6 character").min(6, "Referral must have minimum 6 character"),
 
@@ -65,7 +77,6 @@ const Register = () => {
                 toast.success('Register Successfully');
                 router.push(`/verify?id=${response.data.result._id}`);
             }
-
         }).catch((error) => {
             toast.error('User is Already Registered');
         })
@@ -119,9 +130,18 @@ const Register = () => {
                                                 <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
                                                 <input type="password" className="form-control" {...register('password')} defaultValue={formData.password} onChange={(e) => setValue("password", e.target.value, { shouldValidate: true })} id="exampleInputPassword1" />
                                                 {errors.password && (
-                                                    <div className="text-danger">
-                                                        {errors.password.message}
-                                                    </div>
+                                                    <>
+                                                        <div className={(upper && lower && passLength && special && numeric) ? "d-none" : ""}>
+                                                            <div id="message" className='mt-3'>
+                                                                <h6>Password must contain the following:</h6>
+                                                                <p style={{ color: lower === true ? "#008000" : "#e0694f" }}><li>lowercase letter</li></p>
+                                                                <p style={{ color: upper === true ? "#008000" : "#e0694f" }}><li>capital uppercase letter</li></p>
+                                                                <p style={{ color: numeric === true ? "#008000" : "#e0694f" }}><li>number</li></p>
+                                                                <p style={{ color: special === true ? "#008000" : "#e0694f" }}><li>Spacial Character</li></p>
+                                                                <p style={{ color: passLength === true ? "#008000" : "#e0694f" }}><li>Minimum 8 characters</li></p>
+                                                            </div>
+                                                        </div>
+                                                    </>
                                                 )}
                                             </div>
                                             <div className="mb-4">
