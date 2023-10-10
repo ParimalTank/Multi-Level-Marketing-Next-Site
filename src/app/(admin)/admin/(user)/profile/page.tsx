@@ -33,12 +33,10 @@ const Profile = () => {
     const onSwitchAction = async () => {
         const token = getCookie("admin_token");
         const userId = parseJwt(token).id;
-        console.log("userId: ", userId);
 
         if (!isSwitchOn) {
 
             await axios.post("http://localhost:3000/api/admin/sendMail", { userId }).then((res) => {
-                console.log("message send")
                 router.push(`/admin/twofectorauth?id=${userId}`);
             }).catch((error) => {
                 console.log("error: ", error);

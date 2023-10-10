@@ -9,7 +9,6 @@ export async function POST(request: Request) {
 
         // After Reset Password
         if (userData.token) {
-            console.log("userData.token: From Admin Verification", userData.token);
 
             const secret: any = process.env.NEXT_PUBLIC_JWT_SECRET_KEY;
             const decoded: any = jwt.verify(userData.token, secret);
@@ -31,7 +30,6 @@ export async function POST(request: Request) {
 
         // After Registration
         if (userData.id) {
-            console.log("userData.id: ", userData.id);
             const user = await Admin.findOne({ _id: userData.id });
 
             if (user) {

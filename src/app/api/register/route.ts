@@ -25,13 +25,11 @@ export async function POST(request: Request) {
         } else {
             // Find user Referral Code  // This is from the User
             const checkReferralCode = await User.findOne({ referralcode: userData.referralcode });
-            console.log("This is Main User: ", checkReferralCode);
 
             // Validate the referral code
             const packageReferaal = await PackageHistory.findOne({ referralcode: userData.referralcode })
 
             // const result = await PackageHistory.find({ referralcode: userData.referralcode })
-            // console.log("result: ", result);
 
             if (packageReferaal.levels > 0) {
 
@@ -51,12 +49,9 @@ export async function POST(request: Request) {
                     }
 
                     const result = await User.create(user);
-                    console.log("Previous levels: ", checkReferralCode.levels);
                     const levels = checkReferralCode.levels - 1;
 
                     if (levels > 0) {
-
-                        console.log(" Updated levels: ", levels);
 
                         // Decrease the Levels of User because this user refer to another user
                         await User.findOneAndUpdate({ referralcode: userData.referralcode }, { levels: levels });

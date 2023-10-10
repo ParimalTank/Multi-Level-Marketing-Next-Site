@@ -16,15 +16,12 @@ export async function POST(request: Request) {
     try {
 
         const userData = await request.json();
-        console.log("userData: ", userData);
 
         const email = await Admin.exists({ email: userData.email });
 
         if (email) {
             return NextResponse.json({ message: "User is Already Exist" }, { status: 409 })
         } else {
-
-            console.log("Email inside Sign up", email);
 
             const generateHash = await bcrypt.hash(userData.password, 10);
 

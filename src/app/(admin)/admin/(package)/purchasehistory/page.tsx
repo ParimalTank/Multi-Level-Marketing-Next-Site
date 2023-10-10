@@ -26,7 +26,7 @@ const PurchaseHistory = () => {
     const getUserData = async () => {
         setLoading(true);
         await axios.get("http://localhost:3000/api/admin/packagehistory").then((res) => {
-            console.log("result: ", res.data);
+
             setUser(res.data.result);
             setLoading(false);
         }).catch((error) => {
@@ -35,7 +35,6 @@ const PurchaseHistory = () => {
     }
 
     const handlePageChange = (pageNumber: any) => {
-        console.log(`active page is ${pageNumber}`);
         setCurrentPage(pageNumber);
     };
 

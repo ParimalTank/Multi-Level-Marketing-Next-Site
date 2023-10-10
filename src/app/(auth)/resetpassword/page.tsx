@@ -64,13 +64,11 @@ const ResetPassword = () => {
     const { errors } = formState
 
     const onSubmit = async (data: any) => {
-        console.log("data: ", data);
 
         const userData = data;
         userData["token"] = token;
 
         await axios.post("http://localhost:3000/api/resetpassword", userData).then((response) => {
-            console.log("response: ", response);
             toast.success('Password Reset Successfully');
             router.push("/");
         }).catch((error) => {

@@ -21,19 +21,18 @@ export default function PackageDetails() {
 
     const Params = useParams();
     const id = Params.id;
-    console.log("id: ", id);
 
     const Data = async () => {
         await axios.get(`http://localhost:3000/api/package/${id}`)
             .then((res) => {
                 setProductDetails(res.data.result);
-                console.log("res.data.result: ", res.data.result);
             }).catch(error => {
                 console.log("Error While Getting the Data");
             })
     }
 
     useEffect(() => {
+        // @ts-ignore
         Data(id);
     }, [])
 
@@ -44,7 +43,6 @@ export default function PackageDetails() {
             const token = getCookie('token');
 
             await axios.post(`http://localhost:3000/api/package/${id}`).then((res) => {
-                console.log("res: ", res);
 
                 if (res.data.status === 409) {
                     toast.error("Balance is Not Sufficient");

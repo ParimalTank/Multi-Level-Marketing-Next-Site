@@ -42,7 +42,6 @@ export async function POST(request: Request, { params }: { params: any }) {  // 
 
             // Find the current Users Balance 
             const user = await User.findOne({ _id: userId });
-            console.log("This is main user: ", user);
 
             // Balance is Always grater then 0
             if (user.userWallet > 0) {
@@ -54,7 +53,6 @@ export async function POST(request: Request, { params }: { params: any }) {  // 
 
                     // Find Referral code From Package  userfrom referral code === referralcode
                     const findReferral = await PackageHistory.findOne({ referralcode: user.referralFrom });
-                    console.log("findReferral: ", findReferral);
 
                     let levels;
 
@@ -68,7 +66,6 @@ export async function POST(request: Request, { params }: { params: any }) {  // 
                     }
 
                     const totalLevel = user.levels + levels;
-                    console.log("totalLevel: ", totalLevel);
 
                     // If User is Not Buy a Referral user Package commission is not applying them
                     if (findReferral) {
@@ -86,7 +83,6 @@ export async function POST(request: Request, { params }: { params: any }) {  // 
                         } else {
                             commission = packageUser.userWallet + ((packagePrice * 25) / 100);
                         }
-                        console.log("commission: ", commission);
 
                         // Update Wallet Value and their value
                         await User.findByIdAndUpdate({ _id: userId }, { userWallet: updatedWallet, levels: totalLevel });

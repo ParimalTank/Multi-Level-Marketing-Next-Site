@@ -63,6 +63,7 @@ const VerificationResetPassword = () => {
                                         <form onSubmit={handleSubmit(onSubmit)}>
                                             <div className="mb-3">
                                                 <label htmlFor="exampleInputEmail1" className="form-label">Enter OTP</label>
+                                                {/* @ts-ignore */}
                                                 <input type="text" className="form-control" id="exampleInputEmail1" placeholder='otp' defaultValue={formData.otp} onChange={(e) => setValue("otp", e.target.value, { shouldValidate: true })} aria-describedby="emailHelp" />
                                                 {errors.otp && (
                                                     <div className="text-danger">

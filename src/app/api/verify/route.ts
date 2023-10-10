@@ -33,7 +33,6 @@ export async function POST(request: Request) {
 
         // After Registration
         if (userData.id) {
-            console.log("userData.id: ", userData.id);
             const user = await User.findOne({ _id: userData.id });
 
             if (user) {

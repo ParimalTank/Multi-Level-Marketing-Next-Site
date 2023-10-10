@@ -34,7 +34,6 @@ const usertree = () => {
     const getUserData = async () => {
         await axios.post("http://localhost:3000/api/usertree", { token }).then((res) => {
             setUsers(res.data.username);
-            console.log("Packages from the data", res);
         }).catch(err => {
             console.log("err: ", err);
         })

@@ -16,7 +16,6 @@ const ResetPassword = () => {
     useEffect(() => {
         const search: any = searchParams.get('token');
         setToken(search);
-        console.log("search: ", search);
     }, [token])
 
     const [formData, setFormData] = useState({

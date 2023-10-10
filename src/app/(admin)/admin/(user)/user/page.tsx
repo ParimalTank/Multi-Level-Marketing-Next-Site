@@ -29,7 +29,6 @@ const User = () => {
     const getUserData = async () => {
         setLoading(true);
         await axios.get("http://localhost:3000/api/admin/user").then((res) => {
-            console.log("result: ", res.data);
             setUser(res.data.result);
             setLoading(false);
         }).catch((error) => {
@@ -38,16 +37,13 @@ const User = () => {
     }
 
     const handlePageChange = (pageNumber: any) => {
-        console.log(`active page is ${pageNumber}`);
         setCurrentPage(pageNumber);
     };
 
     const onSwitchAction = async (status: any, id: any) => {
-        console.log("id: ", id);
 
         if (confirm(`are you sure you want to user ${status === "true" ? "InActive" : "Active"}`) == true) {
             await axios.post("http://localhost:3000/api/admin/user", { id, status }).then((res) => {
-                console.log("res: ", res);
                 toast.success("User Status Updated Successfully");
                 window.location.reload();
             }).catch(err => {

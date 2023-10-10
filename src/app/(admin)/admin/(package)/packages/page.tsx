@@ -17,7 +17,6 @@ const packages = () => {
     const getUserData = async () => {
         setLoading(true);
         await axios.get("http://localhost:3000/api/admin/package").then((res) => {
-            console.log("result: ", res.data);
             setPackages(res.data.result);
             setLoading(false);
         }).catch((error) => {
@@ -26,7 +25,6 @@ const packages = () => {
     }
 
     const handleDelete = async (id: any) => {
-        console.log("id: ", id);
 
         if (confirm("are you sure you want to delete this package") == true) {
             await axios.delete(`http://localhost:3000/api/admin/package?id=${id}`).then((res) => {

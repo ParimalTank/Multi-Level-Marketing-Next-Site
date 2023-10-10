@@ -19,7 +19,6 @@ export async function POST(request: Request) {
     try {
 
         const packageData = await request.json();
-        console.log("packageData: ", packageData);
 
         if (packageData) {
 

@@ -13,7 +13,6 @@ export async function POST(request: Request) {
         // Pass token form the frontend and verify user is exist or not
         // get user id from the token(decode the token)
         // const result = await User.findOne({ email: userData.email });
-        // console.log("result: ", result);
 
         const packageDetails = {
             name: packageData.name,
@@ -38,12 +37,10 @@ export async function GET(request: Request) {
 
     try {
         // const packageData = await request.json();
-        // console.log("packageData: ", packageData);
 
         // Pass token form the frontend and verify user is exist or not
         // get user id from the token(decode the token)
         // const result = await User.findOne({ email: userData.email });
-        // console.log("result: ", result);
 
         const result = await Package.find({});
         return NextResponse.json({ result: result }, { status: 200 });
