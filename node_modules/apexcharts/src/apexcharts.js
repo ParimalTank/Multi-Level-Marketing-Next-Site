@@ -560,6 +560,8 @@ export default class ApexCharts {
 
   static getChartByID(id) {
     const chartId = Utils.escapeString(id)
+    if (!Apex._chartInstances) return undefined
+
     const c = Apex._chartInstances.filter((ch) => ch.id === chartId)[0]
     return c && c.chart
   }
@@ -625,6 +627,10 @@ export default class ApexCharts {
 
   hideSeries(seriesName) {
     this.series.hideSeries(seriesName)
+  }
+
+  isSeriesHidden(seriesName) {
+    this.series.isSeriesHidden(seriesName);
   }
 
   resetSeries(shouldUpdateChart = true, shouldResetZoom = true) {

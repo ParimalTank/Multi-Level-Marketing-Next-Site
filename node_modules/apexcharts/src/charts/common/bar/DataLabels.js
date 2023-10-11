@@ -206,6 +206,11 @@ export default class BarDataLabels {
     let vertical =
       w.config.plotOptions.bar.dataLabels.orientation === 'vertical'
 
+    const { zeroEncounters } = this.barCtx.barHelpers.getZeroValueEncounters({
+      i,
+      j,
+    })
+
     bcx =
       bcx - strokeWidth / 2 + (groupIndex !== -1 ? groupIndex * barWidth : 0)
 
@@ -218,6 +223,12 @@ export default class BarDataLabels {
         dataLabelsX = bcx - barWidth / 2 + offX
       } else {
         dataLabelsX = bcx - dataPointsDividedWidth + barWidth / 2 + offX
+      }
+      if (
+        zeroEncounters > 0 &&
+        w.config.plotOptions.bar.hideZeroBarsWhenGrouped
+      ) {
+        dataLabelsX = dataLabelsX - barWidth * zeroEncounters
       }
     }
 
@@ -239,7 +250,7 @@ export default class BarDataLabels {
       case 'center':
         if (vertical) {
           if (valIsNegative) {
-            dataLabelsY = newY + barHeight / 2 + offY
+            dataLabelsY = newY - barHeight / 2 + offY
           } else {
             dataLabelsY = newY + barHeight / 2 - offY
           }
@@ -254,7 +265,7 @@ export default class BarDataLabels {
       case 'bottom':
         if (vertical) {
           if (valIsNegative) {
-            dataLabelsY = newY + barHeight + offY
+            dataLabelsY = newY - barHeight + offY
           } else {
             dataLabelsY = newY + barHeight - offY
           }
