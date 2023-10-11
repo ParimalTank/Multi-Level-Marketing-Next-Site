@@ -1349,6 +1349,8 @@ var RedirectionError = createErrorType("ERR_FR_REDIRECTION_FAILURE", "Redirected
 var TooManyRedirectsError = createErrorType("ERR_FR_TOO_MANY_REDIRECTS", "Maximum number of redirects exceeded");
 var MaxBodyLengthExceededError = createErrorType("ERR_FR_MAX_BODY_LENGTH_EXCEEDED", "Request body larger than maxBodyLength limit");
 var WriteAfterEndError = createErrorType("ERR_STREAM_WRITE_AFTER_END", "write after end");
+// istanbul ignore next
+var destroy = Writable.prototype.destroy || noop;
 // An HTTP(S) request that can be redirected
 function RedirectableRequest(options, responseCallback) {
     // Initialize the request
@@ -1375,8 +1377,14 @@ function RedirectableRequest(options, responseCallback) {
 }
 RedirectableRequest.prototype = Object.create(Writable.prototype);
 RedirectableRequest.prototype.abort = function() {
-    abortRequest(this._currentRequest);
+    destroyRequest(this._currentRequest);
+    this._currentRequest.abort();
     this.emit("abort");
+};
+RedirectableRequest.prototype.destroy = function(error) {
+    destroyRequest(this._currentRequest, error);
+    destroy.call(this, error);
+    return this;
 };
 // Writes buffered data to the current native request
 RedirectableRequest.prototype.write = function(data, encoding, callback) {
@@ -1478,6 +1486,7 @@ RedirectableRequest.prototype.setTimeout = function(msecs, callback) {
         self.removeListener("abort", clearTimer);
         self.removeListener("error", clearTimer);
         self.removeListener("response", clearTimer);
+        self.removeListener("close", clearTimer);
         if (callback) {
             self.removeListener("timeout", callback);
         }
@@ -1500,6 +1509,7 @@ RedirectableRequest.prototype.setTimeout = function(msecs, callback) {
     this.on("abort", clearTimer);
     this.on("error", clearTimer);
     this.on("response", clearTimer);
+    this.on("close", clearTimer);
     return this;
 };
 // Proxy all other public ClientRequest methods
@@ -1630,7 +1640,7 @@ RedirectableRequest.prototype._processResponse = function(response) {
         return;
     }
     // The response is a redirect, so abort the current request
-    abortRequest(this._currentRequest);
+    destroyRequest(this._currentRequest);
     // Discard the remainder of the response to avoid waiting for data
     response.destroy();
     // RFC7231§6.4: A client SHOULD detect and intervene
@@ -1839,12 +1849,12 @@ function createErrorType(code, message, baseClass) {
     CustomError.prototype.name = "Error [" + code + "]";
     return CustomError;
 }
-function abortRequest(request) {
+function destroyRequest(request, error) {
     for (var event of events){
         request.removeListener(event, eventHandlers[event]);
     }
     request.on("error", noop);
-    request.abort();
+    request.destroy(error);
 }
 function isSubdomain(subdomain, domain) {
     assert(isString(subdomain) && isString(domain));
@@ -2309,11 +2319,12 @@ module.exports = function(dst, src) {
 /***/ ((module) => {
 
 
-module.exports = (flag, argv = process.argv)=>{
+module.exports = (flag, argv)=>{
+    argv = argv || process.argv;
     const prefix = flag.startsWith("-") ? "" : flag.length === 1 ? "-" : "--";
-    const position = argv.indexOf(prefix + flag);
-    const terminatorPosition = argv.indexOf("--");
-    return position !== -1 && (terminatorPosition === -1 || position < terminatorPosition);
+    const pos = argv.indexOf(prefix + flag);
+    const terminatorPos = argv.indexOf("--");
+    return pos !== -1 && (terminatorPos === -1 ? true : pos < terminatorPos);
 };
 
 
@@ -2581,23 +2592,16 @@ exports.j = getProxyForUrl;
 
 
 const os = __webpack_require__(22037);
-const tty = __webpack_require__(76224);
 const hasFlag = __webpack_require__(29864);
-const { env } = process;
+const env = process.env;
 let forceColor;
-if (hasFlag("no-color") || hasFlag("no-colors") || hasFlag("color=false") || hasFlag("color=never")) {
-    forceColor = 0;
+if (hasFlag("no-color") || hasFlag("no-colors") || hasFlag("color=false")) {
+    forceColor = false;
 } else if (hasFlag("color") || hasFlag("colors") || hasFlag("color=true") || hasFlag("color=always")) {
-    forceColor = 1;
+    forceColor = true;
 }
 if ("FORCE_COLOR" in env) {
-    if (env.FORCE_COLOR === "true") {
-        forceColor = 1;
-    } else if (env.FORCE_COLOR === "false") {
-        forceColor = 0;
-    } else {
-        forceColor = env.FORCE_COLOR.length === 0 ? 1 : Math.min(parseInt(env.FORCE_COLOR, 10), 3);
-    }
+    forceColor = env.FORCE_COLOR.length === 0 || parseInt(env.FORCE_COLOR, 10) !== 0;
 }
 function translateLevel(level) {
     if (level === 0) {
@@ -2610,8 +2614,8 @@ function translateLevel(level) {
         has16m: level >= 3
     };
 }
-function supportsColor(haveStream, streamIsTTY) {
-    if (forceColor === 0) {
+function supportsColor(stream) {
+    if (forceColor === false) {
         return 0;
     }
     if (hasFlag("color=16m") || hasFlag("color=full") || hasFlag("color=truecolor")) {
@@ -2620,18 +2624,19 @@ function supportsColor(haveStream, streamIsTTY) {
     if (hasFlag("color=256")) {
         return 2;
     }
-    if (haveStream && !streamIsTTY && forceColor === undefined) {
+    if (stream && !stream.isTTY && forceColor !== true) {
         return 0;
     }
-    const min = forceColor || 0;
-    if (env.TERM === "dumb") {
-        return min;
-    }
+    const min = forceColor ? 1 : 0;
     if (process.platform === "win32") {
-        // Windows 10 build 10586 is the first Windows release that supports 256 colors.
-        // Windows 10 build 14931 is the first release that supports 16m/TrueColor.
+        // Node.js 7.5.0 is the first version of Node.js to include a patch to
+        // libuv that enables 256 color output on Windows. Anything earlier and it
+        // won't work. However, here we target Node.js 8 at minimum as it is an LTS
+        // release, and Node.js 7 is not. Windows 10 build 10586 is the first Windows
+        // release that supports 256 colors. Windows 10 build 14931 is the first release
+        // that supports 16m/TrueColor.
         const osRelease = os.release().split(".");
-        if (Number(osRelease[0]) >= 10 && Number(osRelease[2]) >= 10586) {
+        if (Number(process.versions.node.split(".")[0]) >= 8 && Number(osRelease[0]) >= 10 && Number(osRelease[2]) >= 10586) {
             return Number(osRelease[2]) >= 14931 ? 3 : 2;
         }
         return 1;
@@ -2641,9 +2646,7 @@ function supportsColor(haveStream, streamIsTTY) {
             "TRAVIS",
             "CIRCLECI",
             "APPVEYOR",
-            "GITLAB_CI",
-            "GITHUB_ACTIONS",
-            "BUILDKITE"
+            "GITLAB_CI"
         ].some((sign)=>sign in env) || env.CI_NAME === "codeship") {
             return 1;
         }
@@ -2673,16 +2676,19 @@ function supportsColor(haveStream, streamIsTTY) {
     if ("COLORTERM" in env) {
         return 1;
     }
+    if (env.TERM === "dumb") {
+        return min;
+    }
     return min;
 }
 function getSupportLevel(stream) {
-    const level = supportsColor(stream, stream && stream.isTTY);
+    const level = supportsColor(stream);
     return translateLevel(level);
 }
 module.exports = {
     supportsColor: getSupportLevel,
-    stdout: translateLevel(supportsColor(true, tty.isatty(1))),
-    stderr: translateLevel(supportsColor(true, tty.isatty(2)))
+    stdout: getSupportLevel(process.stdout),
+    stderr: getSupportLevel(process.stderr)
 };
 
 
@@ -3887,7 +3893,10 @@ function toURLEncodedForm(data, options) {
 }
 const defaults = {
     transitional: defaults_transitional,
-    adapter: node.isNode ? "http" : "xhr",
+    adapter: [
+        "xhr",
+        "http"
+    ],
     transformRequest: [
         function transformRequest(data, headers) {
             const contentType = headers.getContentType() || "";
@@ -4420,7 +4429,7 @@ var follow_redirects = __webpack_require__(2725);
 // EXTERNAL MODULE: external "zlib"
 var external_zlib_ = __webpack_require__(59796);
 ;// CONCATENATED MODULE: ./node_modules/axios/lib/env/data.js
-const VERSION = "1.5.0";
+const VERSION = "1.5.1";
 
 ;// CONCATENATED MODULE: ./node_modules/axios/lib/helpers/parseProtocol.js
 
@@ -5231,7 +5240,7 @@ const wrapAsync = (asyncExecutor)=>{
                 if (method === "HEAD" || res.statusCode === 204) {
                     delete res.headers["content-encoding"];
                 }
-                switch(res.headers["content-encoding"]){
+                switch((res.headers["content-encoding"] || "").toLowerCase()){
                     /*eslint default-case:0*/ case "gzip":
                     case "x-gzip":
                     case "compress":
@@ -5338,7 +5347,7 @@ const wrapAsync = (asyncExecutor)=>{
         if (config.timeout) {
             // This is forcing a int timeout to avoid problems if the `req` interface doesn't handle other types.
             const timeout = parseInt(config.timeout, 10);
-            if (isNaN(timeout)) {
+            if (Number.isNaN(timeout)) {
                 reject(new core_AxiosError("error trying to parse `config.timeout` to int", core_AxiosError.ERR_BAD_OPTION_VALUE, config, req));
                 return;
             }
@@ -5530,11 +5539,15 @@ const isXHRAdapterSupported = typeof XMLHttpRequest !== "undefined";
                 config.signal.removeEventListener("abort", onCanceled);
             }
         }
+        let contentType;
         if (utils.isFormData(requestData)) {
             if (node.isStandardBrowserEnv || node.isStandardBrowserWebWorkerEnv) {
                 requestHeaders.setContentType(false); // Let the browser set it
-            } else {
-                requestHeaders.setContentType("multipart/form-data;", false); // mobile/desktop app frameworks
+            } else if (!requestHeaders.getContentType(/^\s*multipart\/form-data/)) {
+                requestHeaders.setContentType("multipart/form-data"); // mobile/desktop app frameworks
+            } else if (utils.isString(contentType = requestHeaders.getContentType())) {
+                // fix semicolon duplication issue for ReactNative FormData implementation
+                requestHeaders.setContentType(contentType.replace(/^\s*(multipart\/form-data);+/, "$1"));
             }
         }
         let request = new XMLHttpRequest();
@@ -5705,6 +5718,8 @@ utils.forEach(knownAdapters, (fn, value)=>{
         });
     }
 });
+const renderReason = (reason)=>`- ${reason}`;
+const isResolvedHandle = (adapter)=>utils.isFunction(adapter) || adapter === null || adapter === false;
 /* harmony default export */ const adapters = ({
     getAdapter: (adapters)=>{
         adapters = utils.isArray(adapters) ? adapters : [
@@ -5713,20 +5728,26 @@ utils.forEach(knownAdapters, (fn, value)=>{
         const { length } = adapters;
         let nameOrAdapter;
         let adapter;
+        const rejectedReasons = {};
         for(let i = 0; i < length; i++){
             nameOrAdapter = adapters[i];
-            if (adapter = utils.isString(nameOrAdapter) ? knownAdapters[nameOrAdapter.toLowerCase()] : nameOrAdapter) {
+            let id;
+            adapter = nameOrAdapter;
+            if (!isResolvedHandle(nameOrAdapter)) {
+                adapter = knownAdapters[(id = String(nameOrAdapter)).toLowerCase()];
+                if (adapter === undefined) {
+                    throw new core_AxiosError(`Unknown adapter '${id}'`);
+                }
+            }
+            if (adapter) {
                 break;
             }
+            rejectedReasons[id || "#" + i] = adapter;
         }
         if (!adapter) {
-            if (adapter === false) {
-                throw new core_AxiosError(`Adapter ${nameOrAdapter} is not supported by the environment`, "ERR_NOT_SUPPORT");
-            }
-            throw new Error(utils.hasOwnProp(knownAdapters, nameOrAdapter) ? `Adapter '${nameOrAdapter}' is not available in the build` : `Unknown adapter '${nameOrAdapter}'`);
-        }
-        if (!utils.isFunction(adapter)) {
-            throw new TypeError("adapter is not a function");
+            const reasons = Object.entries(rejectedReasons).map(([id, state])=>`adapter ${id} ` + (state === false ? "is not supported by the environment" : "is not available in the build"));
+            let s = length ? reasons.length > 1 ? "since :\n" + reasons.map(renderReason).join("\n") : " " + renderReason(reasons[0]) : "as no adapter specified";
+            throw new core_AxiosError(`There is no suitable adapter to dispatch the request ` + s, "ERR_NOT_SUPPORT");
         }
         return adapter;
     },
