@@ -55,11 +55,11 @@ export async function POST(request: Request) {
 
                         // Decrease the Levels of User because this user refer to another user
                         await User.findOneAndUpdate({ referralcode: userData.referralcode }, { levels: levels });
-                        // await sendMail(
-                        //     "Mail Verification",
-                        //     JSON.stringify(userData.email),
-                        //     `Verify Code :  ${otp}`
-                        // );
+                        await sendMail(
+                            "Mail Verification",
+                            JSON.stringify(userData.email),
+                            `Verify Code :  ${otp}`
+                        );
                         return NextResponse.json({ result }, { status: 200 })
 
                     } else {
