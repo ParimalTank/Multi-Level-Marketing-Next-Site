@@ -32,7 +32,7 @@ const usertree = () => {
     const token = getCookie("token");
 
     const getUserData = async () => {
-        await axios.post("http://localhost:3000/api/usertree", { token }, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/usertree`, { token }, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',

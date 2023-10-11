@@ -35,7 +35,7 @@ const TwoFectorAuth = () => {
         const userData = data;
         userData["id"] = id;
 
-        await axios.post("http://localhost:3000/api/verify", data, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/verify`, data, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',

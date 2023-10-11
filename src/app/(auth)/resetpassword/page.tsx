@@ -68,7 +68,7 @@ const ResetPassword = () => {
         const userData = data;
         userData["token"] = token;
 
-        await axios.post("http://localhost:3000/api/resetpassword", userData, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/resetpassword`, userData, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',

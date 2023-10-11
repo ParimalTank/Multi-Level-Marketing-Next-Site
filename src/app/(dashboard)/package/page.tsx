@@ -8,7 +8,7 @@ import { cookies } from 'next/headers';
 async function Dashboard() {
     let data: any;
     const getPackageData = async () => {
-        await axios.get("http://localhost:3000/api/package", {
+        await axios.get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/package`, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ async function Dashboard() {
     let packageDetails: any;
     const getUserData = async () => {
         const token = cookies().get("token")?.value
-        await axios.post("http://localhost:3000/api/user", { token }, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user`, { token }, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',

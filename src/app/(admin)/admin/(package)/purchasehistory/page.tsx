@@ -25,8 +25,7 @@ const PurchaseHistory = () => {
 
     const getUserData = async () => {
         setLoading(true);
-        await axios.get("http://localhost:3000/api/admin/packagehistory").then((res) => {
-
+        await axios.get(`${process.env.NEXT_PUBLIC_ADMIN_API_ENDPOINT}/packagehistory`).then((res) => {
             setUser(res.data.result);
             setLoading(false);
         }).catch((error) => {

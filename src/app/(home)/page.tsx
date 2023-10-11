@@ -58,7 +58,7 @@ const Login = () => {
 
     const onSubmit = async (data: any) => {
 
-        await axios.post("https://parimal-multi-level-marketing-next-site.vercel.app/api/login", data, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/login`, data, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',

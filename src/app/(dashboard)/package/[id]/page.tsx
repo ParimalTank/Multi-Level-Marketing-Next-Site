@@ -23,7 +23,7 @@ export default function PackageDetails() {
     const id = Params.id;
 
     const Data = async () => {
-        await axios.get(`http://localhost:3000/api/package/${id}`)
+        await axios.get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/package/${id}`)
             .then((res) => {
                 setProductDetails(res.data.result);
             }).catch(error => {
@@ -42,7 +42,7 @@ export default function PackageDetails() {
 
             const token = getCookie('token');
 
-            await axios.post(`http://localhost:3000/api/package/${id}`, {
+            await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/package/${id}`, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json',

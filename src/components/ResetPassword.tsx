@@ -71,7 +71,7 @@ export const ResetPassword = ({ useremail }: { useremail: any }) => {
         const userData = data;
         userData["email"] = email;
 
-        await axios.post("http://localhost:3000/api/resetpassword", userData, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/resetpassword`, userData, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',

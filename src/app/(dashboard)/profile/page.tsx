@@ -35,7 +35,7 @@ const Profile = () => {
 
         if (!isSwitchOn) {
 
-            await axios.post("http://localhost:3000/api/sendmail", { userId }, {
+            await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/sendmail`, { userId }, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json',
@@ -51,11 +51,10 @@ const Profile = () => {
     };
 
     const userData = async () => {
-        let userData;
-        let packageDetails;
+
         const token = getCookie("token");
 
-        await axios.post("http://localhost:3000/api/user", { token }, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user`, { token }, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',

@@ -28,7 +28,7 @@ const User = () => {
 
     const getUserData = async () => {
         setLoading(true);
-        await axios.get("http://localhost:3000/api/admin/user").then((res) => {
+        await axios.get(`${process.env.NEXT_PUBLIC_ADMIN_API_ENDPOINT}/user`).then((res) => {
             setUser(res.data.result);
             setLoading(false);
         }).catch((error) => {

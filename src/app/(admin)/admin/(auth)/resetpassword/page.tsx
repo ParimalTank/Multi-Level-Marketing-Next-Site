@@ -69,7 +69,7 @@ const ResetPassword = () => {
         const userData = data;
         userData["token"] = token;
 
-        await axios.post("http://localhost:3000/api/admin/resetpassword", userData).then((response) => {
+        await axios.post(`${process.env.NEXT_PUBLIC_ADMIN_API_ENDPOINT}/resetpassword`, userData).then((response) => {
             toast.success('Password Reset Successfully');
             router.push("/admin/login");
         }).catch((error) => {

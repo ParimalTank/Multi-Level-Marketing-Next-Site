@@ -25,7 +25,7 @@ const ForgotPassword = () => {
 
     const onSubmit = async (data: any) => {
 
-        await axios.post("http://localhost:3000/api/forgotpassword", data, {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/forgotpassword`, data, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',

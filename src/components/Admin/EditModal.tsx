@@ -80,7 +80,7 @@ const EditModal = (props: any) => {
                 packageData["_id"] = packages._id;
 
 
-                await axios.patch("http://localhost:3000/api/admin/package", packageData, {
+                await axios.patch(`${process.env.NEXT_PUBLIC_ADMIN_API_ENDPOINT}/package`, packageData, {
                     headers: {
                         'Access-Control-Allow-Origin': '*',
                         'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ const EditModal = (props: any) => {
             const packageDetails = data;
             data["_id"] = packages._id;
 
-            await axios.patch("http://localhost:3000/api/admin/package", packageDetails, {
+            await axios.patch(`${process.env.NEXT_PUBLIC_ADMIN_API_ENDPOINT}/package`, packageDetails, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json',

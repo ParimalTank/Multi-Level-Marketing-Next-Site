@@ -25,7 +25,7 @@ const ForgotPassword = () => {
 
     const onSubmit = async (data: any) => {
 
-        await axios.post("http://localhost:3000/api/admin/forgotpassword", data).then((response) => {
+        await axios.post(`${process.env.NEXT_PUBLIC_ADMIN_API_ENDPOINT}/forgotpassword`, data).then((response) => {
             router.push(`/admin/verifybeforreset?token=${response.data.token}`);
         }).catch((error) => {
             toast.error('User is Already Registered');

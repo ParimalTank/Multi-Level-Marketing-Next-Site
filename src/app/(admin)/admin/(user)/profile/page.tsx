@@ -36,7 +36,7 @@ const Profile = () => {
 
         if (!isSwitchOn) {
 
-            await axios.post("http://localhost:3000/api/admin/sendMail", { userId }).then((res) => {
+            await axios.post(`${process.env.NEXT_PUBLIC_ADMIN_API_ENDPOINT}/sendMail`, { userId }).then((res) => {
                 router.push(`/admin/twofectorauth?id=${userId}`);
             }).catch((error) => {
                 console.log("error: ", error);
@@ -48,7 +48,7 @@ const Profile = () => {
     const userData = async () => {
         const token = getCookie("admin_token");
 
-        await axios.post("http://localhost:3000/api/admin/checkvaliduser", { token }).then((res) => {
+        await axios.post(`${process.env.NEXT_PUBLIC_ADMIN_API_ENDPOINT}/checkvaliduser`, { token }).then((res) => {
             setUser(res.data.result);
         }).catch(error => {
             console.log("error: ", error);

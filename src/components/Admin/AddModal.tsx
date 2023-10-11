@@ -75,7 +75,7 @@ const AddModal = () => {
                 const packageData = data;
                 packageData["imageurl"] = response.data.secure_url;
 
-                await axios.post("http://localhost:3000/api/admin/package", packageData, {
+                await axios.post(`${process.env.NEXT_PUBLIC_ADMIN_API_ENDPOINT}/package`, packageData, {
                     headers: {
                         'Access-Control-Allow-Origin': '*',
                         'Content-Type': 'application/json',
