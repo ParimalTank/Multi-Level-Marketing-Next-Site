@@ -58,7 +58,7 @@ const Login = () => {
 
     const onSubmit = async (data: any) => {
 
-        await axios.post("http://localhost:3000/api/login", data, {
+        await axios.post("https://parimal-multi-level-marketing-next-site.vercel.app/api/login", data, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
