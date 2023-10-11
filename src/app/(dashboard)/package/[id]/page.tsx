@@ -42,7 +42,12 @@ export default function PackageDetails() {
 
             const token = getCookie('token');
 
-            await axios.post(`http://localhost:3000/api/package/${id}`).then((res) => {
+            await axios.post(`http://localhost:3000/api/package/${id}`, {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json',
+                },
+            }).then((res) => {
 
                 if (res.data.status === 409) {
                     toast.error("Balance is Not Sufficient");

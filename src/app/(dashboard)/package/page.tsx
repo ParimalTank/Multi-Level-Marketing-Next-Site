@@ -8,7 +8,12 @@ import { cookies } from 'next/headers';
 async function Dashboard() {
     let data: any;
     const getPackageData = async () => {
-        await axios.get("http://localhost:3000/api/package").then((res) => {
+        await axios.get("http://localhost:3000/api/package", {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+            },
+        }).then((res) => {
             data = res.data.result;
         }).catch(error => {
             console.log("error: ", error);
@@ -20,7 +25,12 @@ async function Dashboard() {
     let packageDetails: any;
     const getUserData = async () => {
         const token = cookies().get("token")?.value
-        await axios.post("http://localhost:3000/api/user", { token }).then((res) => {
+        await axios.post("http://localhost:3000/api/user", { token }, {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+            },
+        }).then((res) => {
             userData = res.data.result;
             packageDetails = res.data.package;
         }).catch(error => {

@@ -25,7 +25,12 @@ const ForgotPassword = () => {
 
     const onSubmit = async (data: any) => {
 
-        await axios.post("http://localhost:3000/api/forgotpassword", data).then((response) => {
+        await axios.post("http://localhost:3000/api/forgotpassword", data, {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => {
             router.push(`/verifybeforreset?token=${response.data.token}`);
         }).catch((error) => {
             toast.error('User is Not Registered');

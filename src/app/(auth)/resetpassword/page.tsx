@@ -68,7 +68,12 @@ const ResetPassword = () => {
         const userData = data;
         userData["token"] = token;
 
-        await axios.post("http://localhost:3000/api/resetpassword", userData).then((response) => {
+        await axios.post("http://localhost:3000/api/resetpassword", userData, {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => {
             toast.success('Password Reset Successfully');
             router.push("/");
         }).catch((error) => {

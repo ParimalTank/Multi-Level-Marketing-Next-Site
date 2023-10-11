@@ -67,7 +67,12 @@ const Register = () => {
 
     const onSubmit = async (data: any) => {
 
-        await axios.post("http://localhost:3000/api/register", data).then((response) => {
+        await axios.post("http://localhost:3000/api/register", data, {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => {
 
             if (response.data.status === 410) {
                 toast.error('Invalid Referral Code');

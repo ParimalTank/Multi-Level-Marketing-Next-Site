@@ -61,7 +61,13 @@ const EditModal = (props: any) => {
 
                 const response = await axios.post(
                     "https://api.cloudinary.com/v1_1/dzus1xwmw/image/upload",
-                    formData
+                    formData,
+                    {
+                        headers: {
+                            'Access-Control-Allow-Origin': '*',
+                            'Content-Type': 'application/json',
+                        },
+                    }
                 );
 
                 setImageURL(response.data.secure_url);
@@ -74,7 +80,12 @@ const EditModal = (props: any) => {
                 packageData["_id"] = packages._id;
 
 
-                await axios.patch("http://localhost:3000/api/admin/package", packageData).then((result) => {
+                await axios.patch("http://localhost:3000/api/admin/package", packageData, {
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Content-Type': 'application/json',
+                    },
+                }).then((result) => {
                     console.log("result: ", result);
                     toast.success("Package Added Successfully");
                     window.location.reload();
@@ -91,7 +102,12 @@ const EditModal = (props: any) => {
             const packageDetails = data;
             data["_id"] = packages._id;
 
-            await axios.patch("http://localhost:3000/api/admin/package", packageDetails).then((result) => {
+            await axios.patch("http://localhost:3000/api/admin/package", packageDetails, {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json',
+                },
+            }).then((result) => {
 
                 toast.success("Package Added Successfully");
                 window.location.reload();

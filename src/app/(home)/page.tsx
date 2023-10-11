@@ -58,7 +58,12 @@ const Login = () => {
 
     const onSubmit = async (data: any) => {
 
-        await axios.post("http://localhost:3000/api/login", data).then((response) => {
+        await axios.post("http://localhost:3000/api/login", data, {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => {
 
             if (response.data.status === 410) {
                 toast.error('Admin has mark deactivate to your account! please contact admin');

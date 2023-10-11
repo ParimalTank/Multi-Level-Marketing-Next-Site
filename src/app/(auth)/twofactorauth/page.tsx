@@ -35,7 +35,12 @@ const TwoFectorAuth = () => {
         const userData = data;
         userData["id"] = id;
 
-        await axios.post("http://localhost:3000/api/verify", data).then((response) => {
+        await axios.post("http://localhost:3000/api/verify", data, {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => {
             toast.success('Verification Successfully');
             router.push("/");
         }).catch((error) => {

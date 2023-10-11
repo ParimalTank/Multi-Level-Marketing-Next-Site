@@ -60,7 +60,12 @@ const AddModal = () => {
 
                 const response = await axios.post(
                     "https://api.cloudinary.com/v1_1/dzus1xwmw/image/upload",
-                    formData
+                    formData, {
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Content-Type': 'application/json',
+                    },
+                }
                 );
 
                 setImageURL(response.data.secure_url);
@@ -70,7 +75,12 @@ const AddModal = () => {
                 const packageData = data;
                 packageData["imageurl"] = response.data.secure_url;
 
-                await axios.post("http://localhost:3000/api/admin/package", packageData).then((result) => {
+                await axios.post("http://localhost:3000/api/admin/package", packageData, {
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Content-Type': 'application/json',
+                    },
+                }).then((result) => {
 
                     toast.success("Package Added Successfully");
                     window.location.reload();
