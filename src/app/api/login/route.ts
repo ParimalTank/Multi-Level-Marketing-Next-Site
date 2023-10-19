@@ -28,7 +28,12 @@ export async function POST(request: Request) {
             const secrat: any = process.env.JWT_SECRET;
             const token = jwt.sign({ id: result._id }, secrat, { expiresIn: 60 * 60 * 24 * 7 })
 
-            const response = NextResponse.json({ status: 200 });
+            const response = NextResponse.json({ status: 200 , 
+                headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            },});
 
             response.cookies.set({
                 name: "token",

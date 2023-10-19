@@ -60,7 +60,13 @@ export async function POST(request: Request) {
                             JSON.stringify(userData.email),
                             `Verify Code :  ${otp}`
                         );
-                        return NextResponse.json({ result }, { status: 200 })
+                        
+                        return NextResponse.json({ result }, { status: 200 ,  
+                            headers: {
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+                            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+                        } }  )
 
                     } else {
                         return NextResponse.json({ status: 410 })
