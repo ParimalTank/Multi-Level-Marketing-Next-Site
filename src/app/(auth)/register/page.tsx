@@ -69,6 +69,7 @@ const Register = () => {
 
         await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/register`, data, {
             headers: {
+                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
             },
         }).then((response) => {

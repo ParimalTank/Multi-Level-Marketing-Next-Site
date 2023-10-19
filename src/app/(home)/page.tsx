@@ -60,6 +60,7 @@ const Login = () => {
 
         await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/login`, data, {
             headers: {
+                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
             },
         }).then((response) => {
